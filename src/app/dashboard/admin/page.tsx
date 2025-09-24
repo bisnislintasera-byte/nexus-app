@@ -113,155 +113,167 @@ export default function AdminDashboard() {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
         {/* Statistik Cards - Responsive grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
-          <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 shadow-sm hover:shadow-md transition-all duration-300">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-blue-800">Total Pengguna</CardTitle>
-              <Users className="h-6 w-6 text-blue-600" />
+              <CardTitle className="text-sm font-semibold text-blue-900">Total Pengguna</CardTitle>
+              <div className="p-2 bg-blue-200/50 rounded-xl">
+                <Users className="h-5 w-5 text-blue-700" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-900">{stats.totalUsers}</div>
-              <p className="text-xs text-blue-700 mt-1">Pengguna terdaftar</p>
+              <div className="text-3xl font-bold text-blue-900">{stats.totalUsers}</div>
+              <p className="text-sm text-blue-700 mt-1 font-medium">Pengguna terdaftar</p>
             </CardContent>
           </Card>
           
-          <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200 shadow-sm hover:shadow-md transition-all duration-300">
+          <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-green-800">Data Master</CardTitle>
-              <Database className="h-6 w-6 text-green-600" />
+              <CardTitle className="text-sm font-semibold text-green-900">Data Master</CardTitle>
+              <div className="p-2 bg-green-200/50 rounded-xl">
+                <Database className="h-5 w-5 text-green-700" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-900">{stats.totalMasterData}</div>
-              <p className="text-xs text-green-700 mt-1">Entri data master</p>
+              <div className="text-3xl font-bold text-green-900">{stats.totalMasterData}</div>
+              <p className="text-sm text-green-700 mt-1 font-medium">Entri data master</p>
             </CardContent>
           </Card>
           
-          <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200 shadow-sm hover:shadow-md transition-all duration-300">
+          <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-purple-800">Total Form</CardTitle>
-              <FileBarChart className="h-6 w-6 text-purple-600" />
+              <CardTitle className="text-sm font-semibold text-purple-900">Total Form</CardTitle>
+              <div className="p-2 bg-purple-200/50 rounded-xl">
+                <FileBarChart className="h-5 w-5 text-purple-700" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-purple-900">{stats.totalForms}</div>
-              <p className="text-xs text-purple-700 mt-1">Form verifikasi</p>
+              <div className="text-3xl font-bold text-purple-900">{stats.totalForms}</div>
+              <p className="text-sm text-purple-700 mt-1 font-medium">Form verifikasi</p>
             </CardContent>
           </Card>
           
-          <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200 shadow-sm hover:shadow-md transition-all duration-300">
+          <Card className="bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-yellow-800">Form Pending</CardTitle>
-              <Clock className="h-6 w-6 text-yellow-600" />
+              <CardTitle className="text-sm font-semibold text-amber-900">Form Pending</CardTitle>
+              <div className="p-2 bg-amber-200/50 rounded-xl">
+                <Clock className="h-5 w-5 text-amber-700" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-yellow-900">{stats.pendingForms}</div>
-              <p className="text-xs text-yellow-700 mt-1">Menunggu verifikasi</p>
+              <div className="text-3xl font-bold text-amber-900">{stats.pendingForms}</div>
+              <p className="text-sm text-amber-700 mt-1 font-medium">Menunggu verifikasi</p>
             </CardContent>
           </Card>
         </div>
         
         {/* Quick Actions - Responsive grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <Card className="lg:col-span-2 bg-white shadow rounded-xl overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+          <Card className="lg:col-span-2 bg-white shadow-xl rounded-2xl overflow-hidden border-0">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-gray-800 flex items-center">
-                <ShieldCheck className="mr-2 h-5 w-5 text-blue-600" />
+              <CardTitle className="text-xl font-bold text-gray-900 flex items-center">
+                <div className="p-2 bg-blue-100 rounded-xl mr-3">
+                  <ShieldCheck className="h-6 w-6 text-blue-600" />
+                </div>
                 Manajemen Sistem
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-8">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Button 
                   onClick={() => router.push('/admin/users')}
-                  className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-4 rounded-lg shadow transition-all hover:scale-[1.02] flex items-center justify-center"
+                  className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-6 rounded-xl shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl flex items-center justify-center group"
                 >
-                  <UserCog className="mr-2 h-5 w-5" />
-                  Manajemen Pengguna
+                  <UserCog className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
+                  <span className="font-semibold">Manajemen Pengguna</span>
                 </Button>
                 <Button 
                   onClick={() => router.push('/admin/master-data')}
-                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-4 rounded-lg shadow transition-all hover:scale-[1.02] flex items-center justify-center"
+                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-6 rounded-xl shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl flex items-center justify-center group"
                 >
-                  <HardDrive className="mr-2 h-5 w-5" />
-                  Data Master Aset
+                  <HardDrive className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
+                  <span className="font-semibold">Data Master Aset</span>
                 </Button>
                 <Button 
                   variant="outline"
-                  className="border-gray-300 text-gray-700 py-4 rounded-lg shadow transition-all hover:scale-[1.02] flex items-center justify-center"
+                  className="border-gray-200 text-gray-700 py-6 rounded-xl shadow-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:bg-gray-50 flex items-center justify-center group"
                 >
-                  <BarChart3 className="mr-2 h-5 w-5" />
-                  Laporan & Statistik
+                  <BarChart3 className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
+                  <span className="font-semibold">Laporan & Statistik</span>
                 </Button>
                 <Button 
                   variant="outline"
-                  className="border-gray-300 text-gray-700 py-4 rounded-lg shadow transition-all hover:scale-[1.02] flex items-center justify-center"
+                  className="border-gray-200 text-gray-700 py-6 rounded-xl shadow-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:bg-gray-50 flex items-center justify-center group"
                 >
-                  <Settings className="mr-2 h-5 w-5" />
-                  Pengaturan Sistem
+                  <Settings className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
+                  <span className="font-semibold">Pengaturan Sistem</span>
                 </Button>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="bg-white shadow rounded-xl overflow-hidden">
+          <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-gray-800 flex items-center">
-                <TrendingUp className="mr-2 h-5 w-5 text-purple-600" />
+              <CardTitle className="text-xl font-bold text-gray-900 flex items-center">
+                <div className="p-2 bg-purple-100 rounded-xl mr-3">
+                  <TrendingUp className="h-6 w-6 text-purple-600" />
+                </div>
                 Aktivitas Terbaru
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-6">
               <div className="flow-root">
-                <ul className="divide-y divide-gray-200">
-                  <li className="py-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="flex-shrink-0 h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                <ul className="divide-y divide-gray-100">
+                  <li className="py-4">
+                    <div className="flex items-center space-x-4">
+                      <div className="flex-shrink-0 h-10 w-10 rounded-xl bg-blue-100 flex items-center justify-center">
                         <UserCog className="h-4 w-4 text-blue-600" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-gray-900 truncate">
+                        <p className="text-sm font-semibold text-gray-900 truncate">
                           Pengguna baru ditambahkan
                         </p>
-                        <p className="text-sm text-gray-500 truncate">
+                        <p className="text-xs text-gray-600 truncate mt-1">
                           Engineer: John Doe
                         </p>
                       </div>
-                      <div className="flex-shrink-0 text-xs text-gray-500">
+                      <div className="flex-shrink-0 text-xs text-gray-500 font-medium">
                         2 jam lalu
                       </div>
                     </div>
                   </li>
-                  <li className="py-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="flex-shrink-0 h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+                  <li className="py-4">
+                    <div className="flex items-center space-x-4">
+                      <div className="flex-shrink-0 h-10 w-10 rounded-xl bg-green-100 flex items-center justify-center">
                         <HardDrive className="h-4 w-4 text-green-600" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-gray-900 truncate">
+                        <p className="text-sm font-semibold text-gray-900 truncate">
                           Data master diperbarui
                         </p>
-                        <p className="text-sm text-gray-500 truncate">
+                        <p className="text-xs text-gray-600 truncate mt-1">
                           TID: TID005 - Jakarta Pusat
                         </p>
                       </div>
-                      <div className="flex-shrink-0 text-xs text-gray-500">
+                      <div className="flex-shrink-0 text-xs text-gray-500 font-medium">
                         1 hari lalu
                       </div>
                     </div>
                   </li>
-                  <li className="py-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="flex-shrink-0 h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
+                  <li className="py-4">
+                    <div className="flex items-center space-x-4">
+                      <div className="flex-shrink-0 h-10 w-10 rounded-xl bg-purple-100 flex items-center justify-center">
                         <CheckCircle className="h-4 w-4 text-purple-600" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-gray-900 truncate">
+                        <p className="text-sm font-semibold text-gray-900 truncate">
                           Form verifikasi disetujui
                         </p>
-                        <p className="text-sm text-gray-500 truncate">
+                        <p className="text-xs text-gray-600 truncate mt-1">
                           VER002 - Semarang
                         </p>
                       </div>
-                      <div className="flex-shrink-0 text-xs text-gray-500">
+                      <div className="flex-shrink-0 text-xs text-gray-500 font-medium">
                         2 hari lalu
                       </div>
                     </div>
@@ -273,26 +285,28 @@ export default function AdminDashboard() {
         </div>
         
         {/* System Information - Responsive grid */}
-        <Card className="bg-white shadow rounded-xl overflow-hidden">
+        <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0">
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-800 flex items-center">
-              <Settings className="mr-2 h-5 w-5 text-gray-600" />
+            <CardTitle className="text-xl font-bold text-gray-900 flex items-center">
+              <div className="p-2 bg-gray-100 rounded-xl mr-3">
+                <Settings className="h-6 w-6 text-gray-600" />
+              </div>
               Informasi Sistem
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-8">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <h3 className="text-sm font-medium text-gray-500">Versi Sistem</h3>
-                <p className="mt-1 text-lg font-semibold text-gray-900">v1.0.0</p>
+              <div className="p-6 bg-gray-50 rounded-xl border border-gray-100">
+                <h3 className="text-sm font-semibold text-gray-600">Versi Sistem</h3>
+                <p className="mt-2 text-xl font-bold text-gray-900">v1.0.0</p>
               </div>
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <h3 className="text-sm font-medium text-gray-500">Status Database</h3>
-                <p className="mt-1 text-lg font-semibold text-green-600">Online</p>
+              <div className="p-6 bg-green-50 rounded-xl border border-green-100">
+                <h3 className="text-sm font-semibold text-gray-600">Status Database</h3>
+                <p className="mt-2 text-xl font-bold text-green-600">Online</p>
               </div>
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <h3 className="text-sm font-medium text-gray-500">Pengguna Aktif</h3>
-                <p className="mt-1 text-lg font-semibold text-gray-900">12</p>
+              <div className="p-6 bg-blue-50 rounded-xl border border-blue-100">
+                <h3 className="text-sm font-semibold text-gray-600">Pengguna Aktif</h3>
+                <p className="mt-2 text-xl font-bold text-blue-600">12</p>
               </div>
             </div>
           </CardContent>

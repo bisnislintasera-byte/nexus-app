@@ -44,34 +44,34 @@ export default function Header({
   };
 
   return (
-    <header className="bg-white shadow-sm">
-      <div className="flex items-center justify-between h-16 px-4">
+    <header className="bg-white shadow-lg border-b border-gray-100">
+      <div className="flex items-center justify-between h-16 px-6">
         <div className="flex items-center">
           {/* Tombol menu mobile */}
           <button
-            className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded-md lg:hidden"
+            className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-2 transition-all duration-200 lg:hidden"
             onClick={() => setSidebarOpen(!sidebarOpen)}
             aria-label="Toggle sidebar"
             aria-expanded={sidebarOpen}
           >
-            <Menu className="h-6 w-6" />
+            <Menu className="h-5 w-5" />
           </button>
 
           {/* Tombol collapse desktop */}
           {isDesktop && (
             <button
-              className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded-md"
+              className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-2 transition-all duration-200"
               onClick={() => setIsCollapsed(!isCollapsed)}
               aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
-              {isCollapsed ? <ChevronRight className="h-6 w-6" /> : <ChevronLeft className="h-6 w-6" />}
+              {isCollapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
             </button>
           )}
         </div>
 
         {/* Judul halaman */}
         <div className="flex-1 flex justify-center lg:justify-start">
-          <h1 className="text-lg font-semibold text-gray-800 truncate">
+          <h1 className="text-lg font-bold text-gray-900 truncate ml-4">
             {userRole === 'ENGINEER' && 'Dashboard Engineer'}
             {userRole === 'VERIFIKATOR' && 'Dashboard Verifikator'}
             {userRole === 'ADMIN' && 'Dashboard Administrator'}
@@ -82,19 +82,21 @@ export default function Header({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
-              className="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="flex items-center text-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 hover:scale-105"
               aria-label="User menu"
               aria-haspopup="true"
             >
-              <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
+              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg">
                 {getUserRoleName().charAt(0)}
               </div>
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
+          <DropdownMenuContent className="w-64">
             <DropdownMenuLabel>
-              <p className="text-sm font-medium text-gray-900 truncate">{getUserRoleName()}</p>
-              <p className="text-xs text-gray-500">Online</p>
+              <div className="py-2">
+                <p className="text-sm font-semibold text-gray-900 truncate">{getUserRoleName()}</p>
+                <p className="text-xs text-green-600 font-medium">● Online</p>
+              </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
@@ -107,12 +109,12 @@ export default function Header({
                   }
                 }}
               >
-                <UserCircle className="mr-3 h-5 w-5 text-gray-400" />
+                <UserCircle className="mr-3 h-5 w-5 text-gray-500" />
                 Profil
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleLogout}>
-              <LogOut className="mr-3 h-5 w-5 text-gray-400" />
+              <LogOut className="mr-3 h-5 w-5 text-gray-500" />
               Logout
             </DropdownMenuItem>
           </DropdownMenuContent>

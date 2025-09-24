@@ -41,29 +41,29 @@ function MyFormsPage() {
   } = useFormDetailManagement();
 
   return (
-    <div className="container mx-auto py-4 sm:py-8 px-4">
-      <Card className="p-6">
+    <div className="container mx-auto py-8 px-4">
+      <Card className="p-8 shadow-xl rounded-2xl border-0">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
           <div className="flex items-center gap-4">
             <Button
               onClick={() => router.back()}
               variant="outline"
               size="sm"
-              className="flex items-center"
+              className="flex items-center shadow-md hover:shadow-lg transition-all duration-300"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Kembali
             </Button>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Daftar Form Saya</h1>
-              <p className="text-gray-600 mt-2">Kelola form verifikasi aset yang telah Anda submit</p>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Daftar Form Saya</h1>
+              <p className="text-gray-600 mt-3 text-lg">Kelola form verifikasi aset yang telah Anda submit</p>
             </div>
           </div>
           <Button
             onClick={() => router.push("/engineer/form")}
-            className="flex items-center bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white"
+            className="flex items-center bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 font-semibold"
           >
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus className="mr-2 h-5 w-5" />
             Buat Form Baru
           </Button>
         </div>
@@ -75,12 +75,16 @@ function MyFormsPage() {
         />
 
         {loading ? (
-          <div className="flex justify-center items-center py-8">
+          <div className="flex justify-center items-center py-12">
             <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
           </div>
         ) : filteredForms.length === 0 ? (
-          <div className="text-center py-8">
-            <p className="text-gray-500">Tidak ada form yang ditemukan</p>
+          <div className="text-center py-16">
+            <div className="mx-auto h-16 w-16 rounded-2xl bg-gray-100 flex items-center justify-center mb-4">
+              <FileText className="h-8 w-8 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Tidak ada form yang ditemukan</h3>
+            <p className="text-gray-500">Belum ada form yang sesuai dengan filter yang dipilih</p>
           </div>
         ) : (
           <MyFormList

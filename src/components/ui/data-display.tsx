@@ -50,22 +50,37 @@ const StatusBadge = ({
     PENDING: {
       label: "Pending",
       icon: <Clock className="h-3 w-3" />,
-      className: "bg-yellow-100 text-yellow-800"
+      className: "bg-amber-100 text-amber-800 border border-amber-200"
     },
     APPROVED: {
       label: "Disetujui",
       icon: <CheckCircle className="h-3 w-3" />,
-      className: "bg-green-100 text-green-800"
+      className: "bg-green-100 text-green-800 border border-green-200"
     },
     REJECTED: {
       label: "Ditolak",
       icon: <XCircle className="h-3 w-3" />,
-      className: "bg-red-100 text-red-800"
+      className: "bg-red-100 text-red-800 border border-red-200"
+    },
+    ENGINEER: {
+      label: "Engineer",
+      icon: <User className="h-3 w-3" />,
+      className: "bg-blue-100 text-blue-800 border border-blue-200"
+    },
+    VERIFIKATOR: {
+      label: "Verifikator",
+      icon: <CheckCircle className="h-3 w-3" />,
+      className: "bg-green-100 text-green-800 border border-green-200"
+    },
+    ADMIN: {
+      label: "Administrator",
+      icon: <User className="h-3 w-3" />,
+      className: "bg-purple-100 text-purple-800 border border-purple-200"
     },
     default: {
       label: status,
       icon: <AlertCircle className="h-3 w-3" />,
-      className: "bg-gray-100 text-gray-800"
+      className: "bg-gray-100 text-gray-800 border border-gray-200"
     }
   };
 
@@ -73,7 +88,7 @@ const StatusBadge = ({
 
   return (
     <span className={cn(
-      "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
+      "inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm",
       config.className,
       className
     )}>

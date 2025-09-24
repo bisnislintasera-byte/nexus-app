@@ -192,84 +192,88 @@ export default function MasterDataManagementPage() {
     <div className="container mx-auto py-8">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Manajemen Data Master</h1>
-          <p className="text-gray-600 mt-2">Kelola data master untuk form verifikasi aset</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Manajemen Data Master</h1>
+          <p className="text-gray-600 mt-3 text-lg">Kelola data master untuk form verifikasi aset</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button
             onClick={() => setShowCreateForm(!showCreateForm)}
-            className="flex items-center"
+            className="flex items-center bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 shadow-lg hover:shadow-xl transition-all duration-300"
           >
-            <PlusCircle className="mr-2 h-4 w-4" />
+            <PlusCircle className="mr-2 h-5 w-5" />
             {showCreateForm ? 'Batal' : 'Tambah Data'}
           </Button>
           <Button
             onClick={() => router.push('/admin/pm-periode')}
             variant="outline"
-            className="flex items-center"
+            className="flex items-center shadow-md hover:shadow-lg transition-all duration-300"
           >
-            <Settings className="mr-2 h-4 w-4" />
+            <Settings className="mr-2 h-5 w-5" />
             Pengaturan PM
           </Button>
           <Button
             onClick={() => router.back()}
             variant="outline"
-            className="flex items-center"
+            className="flex items-center shadow-md hover:shadow-lg transition-all duration-300"
           >
-            <MapPin className="mr-2 h-4 w-4" />
+            <MapPin className="mr-2 h-5 w-5" />
             Kembali
           </Button>
         </div>
       </div>
 
       {showCreateForm && (
-        <Card className="bg-white shadow-lg rounded-xl overflow-hidden mb-8">
-          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-            <CardTitle className="flex items-center text-xl">
+        <Card className="bg-white shadow-xl rounded-2xl overflow-hidden mb-10 border-0">
+          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+            <CardTitle className="flex items-center text-xl font-bold">
               {editingData ? (
                 <>
-                  <Edit3 className="mr-2 h-5 w-5 text-blue-600" />
+                  <div className="p-2 bg-blue-100 rounded-xl mr-3">
+                    <Edit3 className="h-6 w-6 text-blue-600" />
+                  </div>
                   Edit Data Master
                 </>
               ) : (
                 <>
-                  <PlusCircle className="mr-2 h-5 w-5 text-blue-600" />
+                  <div className="p-2 bg-blue-100 rounded-xl mr-3">
+                    <PlusCircle className="h-6 w-6 text-blue-600" />
+                  </div>
                   Tambah Data Master Baru
                 </>
               )}
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-6">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <CardContent className="p-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
-                  <Label htmlFor="TID" className="text-gray-700 font-medium">
+                  <Label htmlFor="TID" className="text-gray-800 font-semibold text-sm">
                     Terminal ID (TID) <span className="text-red-500">*</span>
                   </Label>
                   <Input
                     id="TID"
                     type="text"
                     {...register('TID', { required: 'TID wajib diisi' })}
-                    className="w-full"
+                    className="w-full h-12"
                     disabled={!!editingData} // Disable TID when editing
                   />
                   {errors.TID && (
-                    <p className="text-sm text-red-600">{errors.TID.message}</p>
+                    <p className="text-sm text-red-600 font-medium">{errors.TID.message}</p>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="KANWIL" className="text-gray-700 font-medium">
+                  <Label htmlFor="KANWIL" className="text-gray-800 font-semibold text-sm">
                     Kanwil <span className="text-red-500">*</span>
                   </Label>
                   <Input
                     id="KANWIL"
                     type="text"
                     {...register('KANWIL', { required: 'Kanwil wajib diisi' })}
-                    className="w-full"
+                    className="w-full h-12"
                   />
                   {errors.KANWIL && (
-                    <p className="text-sm text-red-600">{errors.KANWIL.message}</p>
+                    <p className="text-sm text-red-600 font-medium">{errors.KANWIL.message}</p>
                   )}
                 </div>
 
@@ -417,12 +421,13 @@ export default function MasterDataManagementPage() {
                     setEditingData(null);
                     reset();
                   }}
+                  className="px-6 py-3 font-semibold"
                 >
                   Batal
                 </Button>
                 <Button
                   type="submit"
-                  className="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white"
+                  className="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white px-6 py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   {editingData ? 'Update Data' : 'Simpan Data'}
                 </Button>
@@ -432,10 +437,12 @@ export default function MasterDataManagementPage() {
         </Card>
       )}
 
-      <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
-        <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-          <CardTitle className="flex items-center text-xl">
-            <Database className="mr-2 h-5 w-5 text-blue-600" />
+      <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0">
+        <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+          <CardTitle className="flex items-center text-xl font-bold">
+            <div className="p-2 bg-blue-100 rounded-xl mr-3">
+              <Database className="h-6 w-6 text-blue-600" />
+            </div>
             Daftar Data Master
           </CardTitle>
         </CardHeader>
@@ -449,7 +456,7 @@ export default function MasterDataManagementPage() {
               icon: <Database className="h-12 w-12 text-gray-400" />
             }}
           />
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-6 border-t border-gray-100">
             <StandardPagination
               page={page}
               totalPages={totalPages}

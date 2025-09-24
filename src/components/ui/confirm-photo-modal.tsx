@@ -36,52 +36,62 @@ export default function ConfirmPhotoModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle className="flex items-center text-lg sm:text-xl">
+          <DialogTitle className="flex items-center text-xl font-bold">
             {isFinalConfirmation ? (
-              <AlertCircle className="mr-2 h-5 w-5 text-red-500" />
+              <div className="p-2 bg-red-100 rounded-xl mr-3">
+                <AlertCircle className="h-6 w-6 text-red-600" />
+              </div>
             ) : (
-              <CheckCircle className="mr-2 h-5 w-5 text-blue-500" />
+              <div className="p-2 bg-blue-100 rounded-xl mr-3">
+                <CheckCircle className="h-6 w-6 text-blue-600" />
+              </div>
             )}
             {title}
           </DialogTitle>
-          <DialogDescription className="text-sm text-gray-600 mt-2">
+          <DialogDescription className="text-base text-gray-700 mt-3 leading-relaxed">
             {description}
           </DialogDescription>
         </DialogHeader>
-        <div className="py-4">
-          <div className="flex items-start p-3 bg-blue-50 rounded-lg border border-blue-200">
-            <AlertCircle className="h-5 w-5 text-blue-500 mt-0.5 mr-2 flex-shrink-0" />
-            <p className="text-sm text-blue-800">
+        <div className="py-6">
+          <div className="flex items-start p-4 bg-blue-50 rounded-xl border border-blue-200/50">
+            <div className="p-1 bg-blue-100 rounded-lg mr-3 flex-shrink-0">
+              <AlertCircle className="h-5 w-5 text-blue-600" />
+            </div>
+            <p className="text-sm text-blue-900 leading-relaxed">
               <span className="font-medium">Perhatian:</span> Pastikan foto yang diunggah adalah fakta dan sesuai kondisi lapangan. 
               Tim verifikator berhak menolak verifikasi jika foto buram, hasil editan, atau tidak relevan.
             </p>
           </div>
         </div>
-        <DialogFooter className="flex space-x-2 sm:space-x-3">
+        <DialogFooter className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
           <Button
             onClick={onClose}
             variant="outline"
-            className="flex items-center"
+            className="flex items-center justify-center w-full sm:w-auto"
             disabled={isConfirming}
           >
-            <XCircle className="mr-2 h-4 w-4" />
+            <XCircle className="mr-2 h-5 w-5" />
             Batal
           </Button>
           <Button
             onClick={handleConfirm}
             disabled={isConfirming}
-            className={isFinalConfirmation ? "bg-red-600 hover:bg-red-700 text-white" : "bg-blue-600 hover:bg-blue-700 text-white"}
+            className={`flex items-center justify-center w-full sm:w-auto font-semibold ${
+              isFinalConfirmation 
+                ? "bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white shadow-lg hover:shadow-xl" 
+                : "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl"
+            }`}
           >
             {isConfirming ? (
               <>
-                <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent"></div>
+                <div className="mr-2 h-5 w-5 animate-spin rounded-full border-2 border-solid border-white border-t-transparent"></div>
                 {isFinalConfirmation ? 'Mengirim Ulang...' : 'Mengirim...'}
               </>
             ) : (
               <>
-                <CheckCircle className="mr-2 h-4 w-4" />
+                <CheckCircle className="mr-2 h-5 w-5" />
                 {isFinalConfirmation ? 'Kirim Ulang Form' : 'Kirim Form'}
               </>
             )}

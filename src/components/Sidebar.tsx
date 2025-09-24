@@ -60,28 +60,40 @@ export default function Sidebar({
   const sidebarContent = (
     <div className="flex flex-col h-full">
       {/* Sidebar header */}
-      <div className={`flex items-center justify-between h-16 px-4 border-b ${isCollapsed && 'px-2'}`}>
-        {!isCollapsed && <h1 className="text-lg font-bold text-gray-800 truncate">Form Verifikasi Aset</h1>}
+      <div className={`flex items-center justify-between h-16 px-6 border-b border-gray-100 ${isCollapsed && 'px-3'}`}>
+        {!isCollapsed && (
+          <div className="flex items-center">
+            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mr-3">
+              <span className="text-white font-bold text-sm">N</span>
+            </div>
+            <h1 className="text-lg font-bold text-gray-900 truncate">Nexus</h1>
+          </div>
+        )}
+        {isCollapsed && (
+          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mx-auto">
+            <span className="text-white font-bold text-sm">N</span>
+          </div>
+        )}
         <button 
-          className="lg:hidden text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded-md"
+          className="lg:hidden text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-1 transition-all duration-200"
           onClick={() => setSidebarOpen(false)}
           aria-label="Tutup sidebar"
         >
-          <X className="h-6 w-6" />
+          <X className="h-5 w-5" />
         </button>
       </div>
 
       {/* Sidebar content */}
-      <div className="flex-1 overflow-y-auto py-4">
-        <nav className="px-2">
-          <div className="space-y-1">
+      <div className="flex-1 overflow-y-auto py-6">
+        <nav className="px-4">
+          <div className="space-y-2">
             <TooltipProvider>
               {menuItems.map((item) => {
                 const isActive = pathname === item.href;
                 const linkContent = (
                   <>
                     {getMenuIcon(item.name)}
-                    <span className={`ml-3 truncate ${isCollapsed && 'hidden'}`}>{item.name}</span>
+                    <span className={`ml-4 truncate font-medium ${isCollapsed && 'hidden'}`}>{item.name}</span>
                   </>
                 );
 
@@ -90,10 +102,10 @@ export default function Sidebar({
                     <TooltipTrigger asChild>
                       <Link
                         href={item.href}
-                        className={`flex items-center px-4 py-3 text-sm rounded-lg transition-all duration-200 ${isCollapsed && 'justify-center'} ${
+                        className={`flex items-center px-4 py-3 text-sm rounded-xl transition-all duration-300 ${isCollapsed && 'justify-center'} ${
                           isActive
-                            ? 'bg-blue-100 text-blue-700 font-medium'
-                            : 'text-gray-700 hover:bg-gray-100'
+                            ? 'bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 font-semibold shadow-sm border border-blue-200/50'
+                            : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                         }`}
                         onClick={() => setSidebarOpen(false)}
                         aria-current={isActive ? 'page' : undefined}
@@ -115,19 +127,22 @@ export default function Sidebar({
       </div>
 
       {/* Sidebar footer */}
-      <div className={`p-4 border-t ${isCollapsed && 'p-2'}`}>
+      <div className={`p-6 border-t border-gray-100 ${isCollapsed && 'p-3'}`}>
         <div className="flex items-center">
-          <div className={`flex-shrink-0 bg-gray-200 rounded-full p-2 ${isCollapsed && 'mx-auto'}`}>
-            <User className="h-5 w-5 text-gray-600" />
+          <div className={`flex-shrink-0 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl p-2.5 ${isCollapsed && 'mx-auto'}`}>
+            <User className="h-5 w-5 text-gray-700" />
           </div>
           {!isCollapsed && (
-            <div className="ml-3 min-w-0">
-              <p className="text-sm font-medium text-gray-700 truncate">
+            <div className="ml-4 min-w-0">
+              <p className="text-sm font-semibold text-gray-900 truncate">
                 {userRole === 'ENGINEER' && 'Engineer'}
                 {userRole === 'VERIFIKATOR' && 'Verifikator'}
                 {userRole === 'ADMIN' && 'Administrator'}
               </p>
-              <p className="text-xs text-gray-500 truncate">Online</p>
+              <div className="flex items-center mt-1">
+                <div className="h-2 w-2 bg-green-500 rounded-full mr-2"></div>
+                <p className="text-xs text-green-600 font-medium truncate">Online</p>
+              </div>
             </div>
           )}
         </div>

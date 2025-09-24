@@ -30,36 +30,36 @@ export const VerificationFilters: React.FC<FilterProps> = ({
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* TID Filter */}
-        <div className="space-y-2">
-          <Label htmlFor="tid">TID</Label>
+        <div className="space-y-3">
+          <Label htmlFor="tid" className="text-sm font-semibold text-gray-800">TID</Label>
           <Input
             id="tid"
             defaultValue={filters.tid}
             onChange={(e) => debouncedSearch('tid', e.target.value)}
             placeholder="Cari berdasarkan TID..."
-            className="w-full"
+            className="w-full h-11"
             disabled={loading}
           />
         </div>
 
         {/* Engineer ID Filter */}
-        <div className="space-y-2">
-          <Label htmlFor="engineerId">Engineer ID</Label>
+        <div className="space-y-3">
+          <Label htmlFor="engineerId" className="text-sm font-semibold text-gray-800">Engineer ID</Label>
           <Input
             id="engineerId"
             defaultValue={filters.engineerId}
             onChange={(e) => debouncedSearch('engineerId', e.target.value)}
             placeholder="Cari berdasarkan ID Engineer..."
-            className="w-full"
+            className="w-full h-11"
             disabled={loading}
           />
         </div>
 
         {/* Status Filter */}
-        <div className="space-y-2">
-          <Label htmlFor="filterStatus">Status</Label>
+        <div className="space-y-3">
+          <Label htmlFor="filterStatus" className="text-sm font-semibold text-gray-800">Status</Label>
           <Select
             value={filters.status}
             onValueChange={(value: VerificationStatus | 'all') => 
@@ -81,8 +81,8 @@ export const VerificationFilters: React.FC<FilterProps> = ({
         </div>
 
         {/* PM Periode Filter */}
-        <div className="space-y-2">
-          <Label htmlFor="filterPMPeriode">PM Periode</Label>
+        <div className="space-y-3">
+          <Label htmlFor="filterPMPeriode" className="text-sm font-semibold text-gray-800">PM Periode</Label>
           <Select
             value={filters.pmPeriode}
             onValueChange={(value: PMPeriode) => 
@@ -106,21 +106,21 @@ export const VerificationFilters: React.FC<FilterProps> = ({
       </div>
 
       {/* Advanced Search */}
-      <div className="space-y-2">
-        <Label htmlFor="searchQuery">Pencarian Umum</Label>
+      <div className="space-y-3">
+        <Label htmlFor="searchQuery" className="text-sm font-semibold text-gray-800">Pencarian Umum</Label>
         <Input
           id="searchQuery"
           defaultValue={filters.searchQuery}
           onChange={(e) => debouncedSearch('searchQuery', e.target.value)}
           placeholder="Cari di semua kolom..."
-          className="w-full"
+          className="w-full h-11"
           disabled={loading}
         />
       </div>
 
       {/* Date Range */}
-      <div className="space-y-2">
-        <Label>Rentang Tanggal</Label>
+      <div className="space-y-3">
+        <Label className="text-sm font-semibold text-gray-800">Rentang Tanggal</Label>
         <DateRangePicker
           date={filters.dateRange ? { 
             from: filters.dateRange.start || undefined,

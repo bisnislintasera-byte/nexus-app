@@ -56,14 +56,14 @@ module.exports = {
         },
       },
       borderRadius: {
-        // Consistent border radius guidelines
-        xs: "calc(var(--radius) - 6px)",
-        sm: "calc(var(--radius) - 4px)",
-        md: "calc(var(--radius) - 2px)",
-        lg: "var(--radius)",
-        xl: "calc(var(--radius) + 2px)",
-        "2xl": "calc(var(--radius) + 4px)",
-        "3xl": "calc(var(--radius) + 6px)",
+        // Modern border radius system
+        xs: "calc(var(--radius) - 4px)",
+        sm: "calc(var(--radius) - 2px)",
+        md: "var(--radius)",
+        lg: "calc(var(--radius) + 4px)",
+        xl: "calc(var(--radius) + 8px)",
+        "2xl": "calc(var(--radius) + 12px)",
+        "3xl": "calc(var(--radius) + 16px)",
       },
       // 8-point grid spacing system
       spacing: {

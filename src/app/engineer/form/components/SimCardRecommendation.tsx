@@ -19,22 +19,24 @@ export const SimCardRecommendation: React.FC<SimCardRecommendationProps> = ({
   isResubmit
 }) => {
   return (
-    <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-cyan-50 to-blue-50 border-b">
-        <CardTitle className="flex items-center text-lg sm:text-xl">
-          <FileText className="mr-2 h-5 w-5 text-cyan-600" />
+    <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0">
+      <CardHeader className="bg-gradient-to-r from-cyan-50 to-blue-50 border-b border-cyan-100">
+        <CardTitle className="flex items-center text-xl font-bold">
+          <div className="p-2 bg-cyan-100 rounded-xl mr-3">
+            <FileText className="h-6 w-6 text-cyan-600" />
+          </div>
           Rekomendasi SIM Card
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-6">
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label className="text-gray-700 font-medium">
+      <CardContent className="p-8">
+        <div className="space-y-6">
+          <div className="space-y-4">
+            <Label className="text-gray-800 font-semibold text-sm">
               Rekomendasi SIM Card <span className="text-red-500">*</span>
             </Label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {providers.map((provider) => (
-                <div key={provider} className="flex items-center">
+                <div key={provider} className="flex items-center p-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-300">
                   <Controller
                     name="REKOMENDASI_SIMCARD"
                     control={control}
@@ -46,27 +48,27 @@ export const SimCardRecommendation: React.FC<SimCardRecommendationProps> = ({
                         value={provider}
                         checked={field.value === provider}
                         onChange={field.onChange}
-                        className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                        className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500 mr-3"
                         disabled={isResubmit}
                       />
                     )}
                   />
-                  <Label htmlFor={`sim-${provider}`} className="ml-2 block text-sm font-medium text-gray-700">
+                  <Label htmlFor={`sim-${provider}`} className="block text-sm font-semibold text-gray-800 cursor-pointer">
                     {provider}
                   </Label>
                 </div>
               ))}
             </div>
             {errors.REKOMENDASI_SIMCARD && (
-              <p className="text-sm text-red-600 flex items-center">
+              <p className="text-sm text-red-600 flex items-center font-medium">
                 <AlertCircle className="mr-1 h-4 w-4" />
                 {errors.REKOMENDASI_SIMCARD.message}
               </p>
             )}
           </div>
           
-          <div className="space-y-2">
-            <Label htmlFor="REKOMENDASI_CATATAN" className="text-gray-700 font-medium">
+          <div className="space-y-4">
+            <Label htmlFor="REKOMENDASI_CATATAN" className="text-gray-800 font-semibold text-sm">
               Catatan Rekomendasi (Opsional)
             </Label>
             <Controller
@@ -75,8 +77,8 @@ export const SimCardRecommendation: React.FC<SimCardRecommendationProps> = ({
               render={({ field }) => (
                 <textarea
                   {...field}
-                  rows={3}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  rows={4}
+                  className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:border-gray-400 bg-white"
                   placeholder="Tambahkan catatan tambahan tentang rekomendasi SIM Card..."
                   disabled={isResubmit}
                 />

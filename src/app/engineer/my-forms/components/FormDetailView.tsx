@@ -65,32 +65,35 @@ const PhotoCard = ({ src, alt, label, details }: { src: string; alt: string; lab
 
 export default function FormDetailView({ form, onClose }: FormDetailViewProps) {
   return (
-    <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+    <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0 mt-8">
+      <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
         <div className="flex justify-between items-center">
-          <CardTitle className="flex items-center text-xl">
-            <FileText className="mr-2 h-5 w-5 text-blue-600" />
+          <CardTitle className="flex items-center text-xl font-bold">
+            <div className="p-2 bg-blue-100 rounded-xl mr-3">
+              <FileText className="h-6 w-6 text-blue-600" />
+            </div>
             Detail Form Verifikasi
           </CardTitle>
           <Button
             onClick={onClose}
             variant="ghost"
             size="sm"
+            className="rounded-lg hover:bg-blue-100 transition-all duration-200"
           >
             <XCircle className="h-5 w-5" />
           </Button>
         </div>
-        <p className="text-sm text-gray-600 mt-2">
+        <p className="text-base text-gray-700 mt-3 font-medium">
           TID: {form.TID} | Lokasi: {form.LOKASI}
         </p>
       </CardHeader>
 
-      <CardContent className="p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <CardContent className="p-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Basic Information */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Informasi Dasar</h3>
-            <div className="space-y-4">
+            <h3 className="text-xl font-bold text-gray-900 mb-6">Informasi Dasar</h3>
+            <div className="space-y-5">
               {[
                 { label: 'Kanwil', value: form.KANWIL },
                 { label: 'KC Supervisi', value: form.KC_SUPERVISI },
@@ -99,9 +102,9 @@ export default function FormDetailView({ form, onClose }: FormDetailViewProps) {
                 { label: 'No PC', value: form.NO_PC },
                 { label: 'SN Mini PC', value: form.SN_MINI_PC }
               ].map((item) => (
-                <div key={item.label}>
-                  <Label className="text-sm text-gray-500">{item.label}</Label>
-                  <p className="text-gray-900">{item.value}</p>
+                <div key={item.label} className="p-3 bg-gray-50 rounded-lg border border-gray-100">
+                  <Label className="text-xs text-gray-600 font-semibold uppercase tracking-wide">{item.label}</Label>
+                  <p className="text-gray-900 font-medium mt-1">{item.value}</p>
                 </div>
               ))}
             </div>
@@ -109,41 +112,41 @@ export default function FormDetailView({ form, onClose }: FormDetailViewProps) {
 
           {/* Verification Details */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Detail Verifikasi</h3>
-            <div className="space-y-4">
+            <h3 className="text-xl font-bold text-gray-900 mb-6">Detail Verifikasi</h3>
+            <div className="space-y-5">
               <div>
-                <Label className="text-sm text-gray-500">Status</Label>
-                <div className="mt-1">
+                <Label className="text-xs text-gray-600 font-semibold uppercase tracking-wide">Status</Label>
+                <div className="mt-2">
                   {getStatusBadge(form.status_verifikasi)}
                 </div>
               </div>
-              <div>
-                <Label className="text-sm text-gray-500">PM Periode</Label>
-                <p className="text-gray-900">{form.PM_PERIODE}</p>
+              <div className="p-3 bg-gray-50 rounded-lg border border-gray-100">
+                <Label className="text-xs text-gray-600 font-semibold uppercase tracking-wide">PM Periode</Label>
+                <p className="text-gray-900 font-medium mt-1">{form.PM_PERIODE}</p>
               </div>
-              <div>
-                <Label className="text-sm text-gray-500">Engineer</Label>
-                <div className="flex items-center mt-1">
+              <div className="p-3 bg-gray-50 rounded-lg border border-gray-100">
+                <Label className="text-xs text-gray-600 font-semibold uppercase tracking-wide">Engineer</Label>
+                <div className="flex items-center mt-2">
                   <User className="h-4 w-4 text-gray-500 mr-2" />
-                  <span className="text-gray-900">{form.ID_ENGINEER}</span>
+                  <span className="text-gray-900 font-medium">{form.ID_ENGINEER}</span>
                 </div>
               </div>
               {form.latitude && form.longitude && (
-                <div>
-                  <Label className="text-sm text-gray-500">Lokasi</Label>
-                  <div className="flex items-center mt-1">
+                <div className="p-3 bg-gray-50 rounded-lg border border-gray-100">
+                  <Label className="text-xs text-gray-600 font-semibold uppercase tracking-wide">Lokasi</Label>
+                  <div className="flex items-center mt-2">
                     <MapPin className="h-4 w-4 text-gray-500 mr-2" />
-                    <span className="text-gray-900">
+                    <span className="text-gray-900 font-medium text-xs">
                       {form.latitude}, {form.longitude}
                     </span>
                   </div>
                 </div>
               )}
-              <div>
-                <Label className="text-sm text-gray-500">Dibuat pada</Label>
-                <div className="flex items-center mt-1">
+              <div className="p-3 bg-gray-50 rounded-lg border border-gray-100">
+                <Label className="text-xs text-gray-600 font-semibold uppercase tracking-wide">Dibuat pada</Label>
+                <div className="flex items-center mt-2">
                   <Calendar className="h-4 w-4 text-gray-500 mr-2" />
-                  <span className="text-gray-900">
+                  <span className="text-gray-900 font-medium text-sm">
                     {form.created_at ? new Date(form.created_at).toLocaleString('id-ID') : 'N/A'}
                   </span>
                 </div>
@@ -153,9 +156,9 @@ export default function FormDetailView({ form, onClose }: FormDetailViewProps) {
         </div>
 
         {/* Checklist Section */}
-        <div className="mt-8">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Checklist Verifikasi</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="mt-10">
+          <h3 className="text-xl font-bold text-gray-900 mb-6">Checklist Verifikasi</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
               { key: 'STATUS_SIGNAL_MODEM', label: 'Status Signal Modem' },
               { key: 'STATUS_DASHBOARD', label: 'Status Dashboard' },
@@ -168,11 +171,15 @@ export default function FormDetailView({ form, onClose }: FormDetailViewProps) {
               { key: 'STATUS_MODEM', label: 'Status Modem' },
               { key: 'REKOMENDASI_SIMCARD', label: 'Rekomendasi SIM Card' }
             ].map((item) => (
-              <div key={item.key} className="flex items-center p-3 bg-gray-50 rounded-lg">
-                <span className={`px-2 py-1 rounded text-xs font-medium ${form[item.key as keyof typeof form] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+              <div key={item.key} className="flex items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
+                <span className={`px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm ${
+                  form[item.key as keyof typeof form] 
+                    ? 'bg-green-100 text-green-800 border border-green-200' 
+                    : 'bg-red-100 text-red-800 border border-red-200'
+                }`}>
                   {form[item.key as keyof typeof form] ? 'OK' : 'NOT OK'}
                 </span>
-                <Label className="ml-3 block text-sm font-medium text-gray-700">
+                <Label className="ml-4 block text-sm font-semibold text-gray-800">
                   {item.label}
                 </Label>
               </div>
@@ -181,9 +188,9 @@ export default function FormDetailView({ form, onClose }: FormDetailViewProps) {
         </div>
 
         {/* Photo Gallery */}
-        <div className="mt-8">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Dokumentasi Foto</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="mt-10">
+          <h3 className="text-xl font-bold text-gray-900 mb-6">Dokumentasi Foto</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { key: 'FOTO_MINI_PC_FULL', label: 'Foto Mini PC Full' },
               { key: 'FOTO_SN_MINI_PC', label: 'Foto SN Mini PC' },
@@ -226,10 +233,12 @@ export default function FormDetailView({ form, onClose }: FormDetailViewProps) {
             !form.FOTO_SIGNAL_MODEM && 
             !form.FOTO_STORAGE_MINI && 
             !form.FOTO_TEMUAN_RUSAK) && (
-            <div className="text-center py-8">
-              <Image className="mx-auto h-12 w-12 text-gray-400" />
-              <h3 className="mt-2 text-sm font-medium text-gray-900">Tidak ada foto</h3>
-              <p className="mt-1 text-sm text-gray-500">
+            <div className="text-center py-16">
+              <div className="mx-auto h-16 w-16 rounded-2xl bg-gray-100 flex items-center justify-center mb-4">
+                <Image className="h-8 w-8 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Tidak ada foto</h3>
+              <p className="text-gray-500">
                 Belum ada foto dokumentasi yang diunggah untuk form ini.
               </p>
             </div>
@@ -238,20 +247,22 @@ export default function FormDetailView({ form, onClose }: FormDetailViewProps) {
 
         {/* Rejection Comments */}
         {form.status_verifikasi === 'REJECTED' && form.comment_verifikasi && (
-          <div className="mt-8 pt-6 border-t border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Komentar Penolakan</h3>
-            <div className="p-4 bg-red-50 rounded-lg border border-red-200">
+          <div className="mt-10 pt-8 border-t border-gray-200">
+            <h3 className="text-xl font-bold text-gray-900 mb-6">Komentar Penolakan</h3>
+            <div className="p-6 bg-red-50 rounded-xl border border-red-200/50">
               <div className="flex items-start">
-                <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 mr-2 flex-shrink-0" />
-                <p className="text-red-800">{form.comment_verifikasi}</p>
+                <div className="p-1 bg-red-100 rounded-lg mr-3 flex-shrink-0">
+                  <AlertCircle className="h-5 w-5 text-red-600" />
+                </div>
+                <p className="text-red-900 leading-relaxed font-medium">{form.comment_verifikasi}</p>
               </div>
             </div>
             
             {/* Photo Rejection Details */}
             {form.foto_verifikasi_details && (
-              <div className="mt-4">
-                <h4 className="text-md font-semibold text-gray-900 mb-2">Detail Penolakan Foto</h4>
-                <div className="space-y-2">
+              <div className="mt-6">
+                <h4 className="text-lg font-bold text-gray-900 mb-4">Detail Penolakan Foto</h4>
+                <div className="space-y-3">
                   {Object.entries(form.foto_verifikasi_details).map(([fieldName, detail]) => {
                     if (detail.status === 'REJECTED' && detail.komentar) {
                       const fieldLabels: Record<string, string> = {

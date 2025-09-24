@@ -10,28 +10,28 @@ export const StatusBadge = ({ status }: StatusBadgeProps) => {
   switch (status) {
     case 'PENDING':
       return (
-        <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-yellow-50 text-yellow-700 border border-yellow-200 shadow-sm">
-          <Clock className="mr-1.5 h-3 w-3" />
+        <span className="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200 shadow-sm">
+          <Clock className="mr-2 h-3.5 w-3.5" />
           Menunggu Verifikasi
         </span>
       );
     case 'APPROVED':
       return (
-        <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-green-50 text-green-700 border border-green-200 shadow-sm">
-          <CheckCircle className="mr-1.5 h-3 w-3" />
+        <span className="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold bg-green-50 text-green-800 border border-green-200 shadow-sm">
+          <CheckCircle className="mr-2 h-3.5 w-3.5" />
           Disetujui
         </span>
       );
     case 'REJECTED':
       return (
-        <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-red-50 text-red-700 border border-red-200 shadow-sm">
-          <XCircle className="mr-1.5 h-3 w-3" />
+        <span className="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-50 text-red-800 border border-red-200 shadow-sm">
+          <XCircle className="mr-2 h-3.5 w-3.5" />
           Ditolak
         </span>
       );
     default:
       return (
-        <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-gray-50 text-gray-700 border border-gray-200 shadow-sm">
+        <span className="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-50 text-gray-800 border border-gray-200 shadow-sm">
           Unknown
         </span>
       );

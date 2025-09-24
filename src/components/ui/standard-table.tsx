@@ -131,7 +131,7 @@ function StandardTable<T>({
                 <TableRow
                   key={index}
                   className={cn(
-                    onRowClick && "cursor-pointer hover:bg-gray-50",
+                    onRowClick && "cursor-pointer hover:bg-gray-50/80 transition-colors duration-200",
                     rowClassName
                   )}
                   onClick={() => onRowClick?.(row)}

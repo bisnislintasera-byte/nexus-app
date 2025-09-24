@@ -97,31 +97,33 @@ export default function PMPeriodeManagementPage() {
     <div className="container mx-auto py-8">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Pengaturan PM Periode</h1>
-          <p className="text-gray-600 mt-2">Kelola periode maintenance yang tersedia untuk form verifikasi</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Pengaturan PM Periode</h1>
+          <p className="text-gray-600 mt-3 text-lg">Kelola periode maintenance yang tersedia untuk form verifikasi</p>
         </div>
         <Button
           onClick={() => router.back()}
           variant="outline"
-          className="flex items-center"
+          className="flex items-center shadow-md hover:shadow-lg transition-all duration-300"
         >
-          <AlertCircle className="mr-2 h-4 w-4" />
+          <AlertCircle className="mr-2 h-5 w-5" />
           Kembali
         </Button>
       </div>
 
-      <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
-        <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-          <CardTitle className="flex items-center text-xl">
-            <Settings className="mr-2 h-5 w-5 text-blue-600" />
+      <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0">
+        <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+          <CardTitle className="flex items-center text-xl font-bold">
+            <div className="p-2 bg-blue-100 rounded-xl mr-3">
+              <Settings className="h-6 w-6 text-blue-600" />
+            </div>
             Daftar Periode Maintenance
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-6">
-          <div className="mb-8">
-            <div className="flex items-end space-x-4">
+        <CardContent className="p-8">
+          <div className="mb-10">
+            <div className="flex items-end space-x-6">
               <div className="flex-1">
-                <Label htmlFor="newPeriode" className="text-gray-700 font-medium">
+                <Label htmlFor="newPeriode" className="text-gray-800 font-semibold text-sm">
                   Tambah Periode Baru
                 </Label>
                 <Input
@@ -130,40 +132,43 @@ export default function PMPeriodeManagementPage() {
                   onChange={(e) => setNewPeriode(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Masukkan nama periode (contoh: PM8)"
-                  className="mt-1"
+                  className="mt-2 h-12"
                 />
               </div>
               <Button
                 onClick={addPeriode}
-                className="flex items-center h-full"
+                className="flex items-center h-12 bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 shadow-lg hover:shadow-xl transition-all duration-300 px-6 font-semibold"
               >
-                <PlusCircle className="mr-2 h-4 w-4" />
+                <PlusCircle className="mr-2 h-5 w-5" />
                 Tambah
               </Button>
             </div>
           </div>
 
-          <div className="mb-8">
-            <Label className="text-gray-700 font-medium mb-4 block">
+          <div className="mb-10">
+            <Label className="text-gray-800 font-semibold text-sm mb-6 block">
               Periode yang Tersedia
             </Label>
             {periodeList.length === 0 ? (
-              <div className="text-center py-8 bg-gray-50 rounded-lg">
-                <p className="text-gray-500">Belum ada periode yang ditambahkan</p>
+              <div className="text-center py-12 bg-gray-50 rounded-xl border border-gray-200">
+                <div className="mx-auto h-12 w-12 rounded-xl bg-gray-100 flex items-center justify-center mb-4">
+                  <Settings className="h-6 w-6 text-gray-400" />
+                </div>
+                <p className="text-gray-500 font-medium">Belum ada periode yang ditambahkan</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {periodeList.map((periode, index) => (
                   <div 
                     key={index} 
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200"
+                    className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200 hover:bg-gray-100 hover:border-gray-300 transition-all duration-300 shadow-sm hover:shadow-md"
                   >
-                    <span className="font-medium text-gray-700">{periode}</span>
+                    <span className="font-semibold text-gray-800">{periode}</span>
                     <Button
                       onClick={() => removePeriode(periode)}
                       variant="destructive"
                       size="sm"
-                      className="flex items-center"
+                      className="flex items-center shadow-md hover:shadow-lg transition-all duration-300"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -177,16 +182,16 @@ export default function PMPeriodeManagementPage() {
             <Button
               onClick={savePMPeriodeSettings}
               disabled={saving}
-              className="flex items-center bg-green-600 hover:bg-green-700"
+              className="flex items-center bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 shadow-lg hover:shadow-xl transition-all duration-300 px-8 py-3 font-semibold"
             >
               {saving ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
+                  <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-3"></div>
                   Menyimpan...
                 </>
               ) : (
                 <>
-                  <Save className="mr-2 h-4 w-4" />
+                  <Save className="mr-3 h-5 w-5" />
                   Simpan Pengaturan
                 </>
               )}
@@ -195,21 +200,23 @@ export default function PMPeriodeManagementPage() {
         </CardContent>
       </Card>
 
-      <Card className="bg-white shadow-lg rounded-xl overflow-hidden mt-8">
-        <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-          <CardTitle className="flex items-center text-xl">
-            <AlertCircle className="mr-2 h-5 w-5 text-blue-600" />
+      <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0 mt-10">
+        <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+          <CardTitle className="flex items-center text-xl font-bold">
+            <div className="p-2 bg-blue-100 rounded-xl mr-3">
+              <AlertCircle className="h-6 w-6 text-blue-600" />
+            </div>
             Informasi
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-6">
-          <div className="prose max-w-none">
-            <p className="text-gray-700">
+        <CardContent className="p-8">
+          <div className="prose max-w-none space-y-4">
+            <p className="text-gray-700 leading-relaxed">
               Pengaturan PM Periode memungkinkan administrator untuk menentukan periode maintenance yang tersedia 
               untuk form verifikasi. Periode yang ditambahkan di sini akan muncul sebagai pilihan radio button 
               pada form verifikasi yang diisi oleh engineer.
             </p>
-            <p className="text-gray-700 mt-4">
+            <p className="text-gray-700 leading-relaxed">
               <strong>Catatan:</strong> Perubahan pada pengaturan ini hanya akan mempengaruhi tampilan di frontend. 
               Backend akan tetap menerima dan menyimpan nilai apapun yang dikirimkan dari frontend dalam bentuk teks 
               tanpa validasi strict.

@@ -253,12 +253,12 @@ function FormPage() {
   };
 
   return (
-    <div className="container mx-auto py-4 sm:py-8 px-4">
-      <div className="mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
+    <div className="container mx-auto py-8 px-4">
+      <div className="mb-10">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
           {isResubmit ? 'Resubmit Verifikasi Nexus' : 'Verifikasi Nexus'}
         </h1>
-        <p className="text-gray-600 mt-2">
+        <p className="text-gray-600 mt-4 text-lg leading-relaxed">
           {isResubmit
             ? 'Lengkapi form verifikasi dengan foto yang perlu diresubmit'
             : 'Lengkapi form verifikasi dengan data yang akurat'}
@@ -267,21 +267,29 @@ function FormPage() {
 
       {/* Modal Warning Lokasi */}
       {showLocationWarning && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
-            <h2 className="text-lg font-bold text-red-600">Lokasi Tidak Valid</h2>
-            <p className="mt-2 text-gray-700">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50 p-4">
+          <div className="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full border border-red-200">
+            <div className="text-center">
+              <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-2xl bg-red-100 mb-4">
+                <AlertCircle className="h-8 w-8 text-red-600" />
+              </div>
+              <h2 className="text-xl font-bold text-red-700 mb-4">Lokasi Tidak Valid</h2>
+              <p className="text-gray-700 leading-relaxed mb-6">
               Jarak Anda {currentDistance ? `${Math.round(currentDistance)} meter` : '-'} dari titik TID.
               Maksimal jarak yang diizinkan adalah 100 meter.
             </p>
-            <Button onClick={() => setShowLocationWarning(false)} className="mt-4 w-full">
+              <Button 
+                onClick={() => setShowLocationWarning(false)} 
+                className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 font-semibold py-3"
+              >
               Tutup
             </Button>
+            </div>
           </div>
         </div>
       )}
 
-      <form onSubmit={handleSubmit(handleFinalSubmit)} className="space-y-8">
+      <form onSubmit={handleSubmit(handleFinalSubmit)} className="space-y-10">
         {/* TID tetap aktif */}
         <BasicInformation
           control={control}
@@ -297,7 +305,7 @@ function FormPage() {
         />
 
         {/* Semua field lain disable dulu sampai lokasi valid */}
-        <div className={isFormDisabled ? 'opacity-50 pointer-events-none' : ''}>
+        <div className={isFormDisabled ? 'opacity-40 pointer-events-none transition-opacity duration-500' : 'transition-opacity duration-500'}>
           <LocationSection
             control={control}
             setValue={setValue}
@@ -322,20 +330,20 @@ function FormPage() {
           <MaintenancePeriod control={control} errors={errors} pmPeriodeList={pmPeriodeList} isResubmit={isResubmit} />
         </div>
 
-        <div className="flex justify-end">
+        <div className="flex justify-end pt-6">
           <Button
             type="submit"
             disabled={isSubmitting || isFormDisabled}
-            className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white px-6 py-3 rounded-lg shadow-lg flex items-center justify-center transition-all duration-200 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white px-8 py-4 rounded-xl shadow-xl flex items-center justify-center transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 font-semibold text-lg"
           >
             {isSubmitting ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-3 h-5 w-5 animate-spin" />
                 Mengirim Form...
               </>
             ) : (
               <>
-                <CheckCircle className="mr-2 h-4 w-4" />
+                <CheckCircle className="mr-3 h-5 w-5" />
                 Kirim Form Verifikasi
               </>
             )}

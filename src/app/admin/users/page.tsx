@@ -217,51 +217,53 @@ export default function UsersManagementPage() {
     <div className="container mx-auto py-8">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Manajemen Pengguna</h1>
-          <p className="text-gray-600 mt-2">Kelola pengguna sistem verifikasi aset</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Manajemen Pengguna</h1>
+          <p className="text-gray-600 mt-3 text-lg">Kelola pengguna sistem verifikasi aset</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button
             onClick={() => router.back()}
             variant="outline"
-            className="flex items-center"
+            className="flex items-center shadow-md hover:shadow-lg transition-all duration-300"
           >
-            <UserX className="mr-2 h-4 w-4" />
+            <UserX className="mr-2 h-5 w-5" />
             Kembali
           </Button>
           <Button
             onClick={() => setShowCreateForm(!showCreateForm)}
-            className="flex items-center bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white"
+            className="flex items-center bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white shadow-lg hover:shadow-xl transition-all duration-300"
           >
-            <UserPlus className="mr-2 h-4 w-4" />
+            <UserPlus className="mr-2 h-5 w-5" />
             {showCreateForm ? 'Batal' : 'Tambah Pengguna'}
           </Button>
         </div>
       </div>
 
       {showCreateForm && (
-        <Card className="bg-white shadow-lg rounded-xl overflow-hidden mb-8">
-          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-            <CardTitle className="flex items-center text-xl">
-              <UserPlus className="mr-2 h-5 w-5 text-blue-600" />
+        <Card className="bg-white shadow-xl rounded-2xl overflow-hidden mb-10 border-0">
+          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+            <CardTitle className="flex items-center text-xl font-bold">
+              <div className="p-2 bg-blue-100 rounded-xl mr-3">
+                <UserPlus className="h-6 w-6 text-blue-600" />
+              </div>
               Tambah Pengguna Baru
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-6">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <CardContent className="p-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
-                  <Label htmlFor="nama" className="text-gray-700 font-medium">
+                  <Label htmlFor="nama" className="text-gray-800 font-semibold text-sm">
                     Nama Lengkap <span className="text-red-500">*</span>
                   </Label>
                   <Input
                     id="nama"
                     type="text"
                     {...register('nama', { required: 'Nama wajib diisi' })}
-                    className="w-full"
+                    className="w-full h-12"
                   />
                   {errors.nama && (
-                    <p className="text-sm text-red-600">{errors.nama.message}</p>
+                    <p className="text-sm text-red-600 font-medium">{errors.nama.message}</p>
                   )}
                 </div>
 
@@ -311,13 +313,13 @@ export default function UsersManagementPage() {
                 </div>
 
                 <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="role" className="text-gray-700 font-medium">
+                  <Label htmlFor="role" className="text-gray-800 font-semibold text-sm">
                     Role <span className="text-red-500">*</span>
                   </Label>
                   <select
                     id="role"
                     {...register('role', { required: 'Role wajib dipilih' })}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                    className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:border-gray-400 bg-white"
                   >
                     <option value="">Pilih Role</option>
                     <option value="ENGINEER">Engineer</option>
@@ -325,7 +327,7 @@ export default function UsersManagementPage() {
                     <option value="ADMIN">Administrator</option>
                   </select>
                   {errors.role && (
-                    <p className="text-sm text-red-600">{errors.role.message}</p>
+                    <p className="text-sm text-red-600 font-medium">{errors.role.message}</p>
                   )}
                 </div>
               </div>
@@ -335,12 +337,13 @@ export default function UsersManagementPage() {
                   type="button"
                   variant="outline"
                   onClick={() => setShowCreateForm(false)}
+                  className="px-6 py-3 font-semibold"
                 >
                   Batal
                 </Button>
                 <Button
                   type="submit"
-                  className="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white"
+                  className="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white px-6 py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   Simpan Pengguna
                 </Button>
@@ -359,10 +362,12 @@ export default function UsersManagementPage() {
         />
       )}
 
-      <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
-        <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-          <CardTitle className="flex items-center text-xl">
-            <Users className="mr-2 h-5 w-5 text-blue-600" />
+      <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0">
+        <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+          <CardTitle className="flex items-center text-xl font-bold">
+            <div className="p-2 bg-blue-100 rounded-xl mr-3">
+              <Users className="h-6 w-6 text-blue-600" />
+            </div>
             Daftar Pengguna
           </CardTitle>
         </CardHeader>
@@ -377,7 +382,7 @@ export default function UsersManagementPage() {
             }}
             onRowClick={(row) => setSelectedUser(row)}
           />
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-6 border-t border-gray-100">
             <StandardPagination
               page={page}
               totalPages={totalPages}

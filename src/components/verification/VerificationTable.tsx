@@ -32,10 +32,12 @@ export const VerificationTable: React.FC<VerificationTableProps> = ({
 
   if (data.length === 0) {
     return (
-      <div className="text-center py-12">
-        <Clock className="mx-auto h-12 w-12 text-gray-400" />
-        <h3 className="mt-2 text-sm font-medium text-gray-900">Data tidak ditemukan</h3>
-        <p className="mt-1 text-sm text-gray-500">
+      <div className="text-center py-20">
+        <div className="mx-auto h-16 w-16 rounded-2xl bg-gray-100 flex items-center justify-center mb-6">
+          <Clock className="h-8 w-8 text-gray-400" />
+        </div>
+        <h3 className="text-xl font-semibold text-gray-900 mb-3">Data tidak ditemukan</h3>
+        <p className="text-gray-500 text-lg">
           Tidak ada data yang sesuai dengan filter yang dipilih.
         </p>
       </div>
@@ -45,80 +47,80 @@ export const VerificationTable: React.FC<VerificationTableProps> = ({
   return (
     <>
       <div className="relative overflow-x-auto">
-        <div className="w-full rounded-lg border bg-card text-card-foreground">
+        <div className="w-full rounded-xl border bg-card text-card-foreground">
           <Table>
             <TableHeader>
-              <TableRow className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                <TableHead className="h-12 px-4 text-left align-middle font-medium">TID</TableHead>
-                <TableHead className="h-12 px-4 text-left align-middle font-medium">Lokasi</TableHead>
-                <TableHead className="h-12 px-4 text-left align-middle font-medium">Engineer</TableHead>
-                <TableHead className="h-12 px-4 text-left align-middle font-medium">Status</TableHead>
-                <TableHead className="h-12 px-4 text-left align-middle font-medium">PM Periode</TableHead>
-                <TableHead className="h-12 px-4 text-left align-middle font-medium">Tanggal Submit</TableHead>
-                <TableHead className="h-12 px-4 text-left align-middle font-medium">Diperbarui</TableHead>
-                <TableHead className="h-12 px-4 text-left align-middle font-medium">Actions</TableHead>
+              <TableRow className="border-b border-gray-200 hover:bg-gray-50/50 transition-colors duration-200">
+                <TableHead className="h-14 px-6 text-left align-middle font-semibold text-gray-800">TID</TableHead>
+                <TableHead className="h-14 px-6 text-left align-middle font-semibold text-gray-800">Lokasi</TableHead>
+                <TableHead className="h-14 px-6 text-left align-middle font-semibold text-gray-800">Engineer</TableHead>
+                <TableHead className="h-14 px-6 text-left align-middle font-semibold text-gray-800">Status</TableHead>
+                <TableHead className="h-14 px-6 text-left align-middle font-semibold text-gray-800">PM Periode</TableHead>
+                <TableHead className="h-14 px-6 text-left align-middle font-semibold text-gray-800">Tanggal Submit</TableHead>
+                <TableHead className="h-14 px-6 text-left align-middle font-semibold text-gray-800">Diperbarui</TableHead>
+                <TableHead className="h-14 px-6 text-left align-middle font-semibold text-gray-800">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {data.map((form) => (
                 <TableRow 
                   key={form.id_verifikasi}
-                  className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+                  className="border-b border-gray-100 transition-colors duration-200 hover:bg-gray-50/80"
                 >
-                  <TableCell className="p-4 align-middle">
-                    <span className="font-medium">{form.TID}</span>
+                  <TableCell className="p-6 align-middle">
+                    <span className="font-semibold text-blue-600">{form.TID}</span>
                   </TableCell>
-                  <TableCell className="p-4 align-middle">
+                  <TableCell className="p-6 align-middle">
                     <div className="flex flex-col">
-                      <span>{form.LOKASI}</span>
-                      <span className="text-sm text-muted-foreground">{form.KC_SUPERVISI}</span>
+                      <span className="font-medium text-gray-900">{form.LOKASI}</span>
+                      <span className="text-sm text-gray-600 mt-1">{form.KC_SUPERVISI}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="p-4 align-middle">
+                  <TableCell className="p-6 align-middle">
                     <div className="flex flex-col">
                       <div className="flex items-center">
-                        <User className="h-4 w-4 mr-2 text-gray-500" />
-                        <span>{form.ID_ENGINEER}</span>
+                        <User className="h-4 w-4 mr-2 text-gray-600" />
+                        <span className="font-medium text-gray-900">{form.ID_ENGINEER}</span>
                       </div>
-                      <span className="text-sm text-muted-foreground">{form.PIC_AREA}</span>
+                      <span className="text-sm text-gray-600 mt-1">{form.PIC_AREA}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="p-4 align-middle">
+                  <TableCell className="p-6 align-middle">
                     <StatusBadge status={form.status_verifikasi as VerificationStatus} />
                   </TableCell>
-                  <TableCell className="p-4 align-middle">
-                    <span className="px-2 py-1 rounded-md bg-gray-100">{form.PM_PERIODE}</span>
+                  <TableCell className="p-6 align-middle">
+                    <span className="px-3 py-1.5 rounded-lg bg-gray-100 text-gray-800 font-medium border border-gray-200">{form.PM_PERIODE}</span>
                   </TableCell>
-                  <TableCell className="p-4 align-middle">
+                  <TableCell className="p-6 align-middle">
                     <div className="flex flex-col">
-                      <span className="text-sm">
+                      <span className="text-sm font-medium text-gray-900">
                         {new Date(form.created_at).toLocaleDateString('id-ID')}
                       </span>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-xs text-gray-600 mt-1">
                         {new Date(form.created_at).toLocaleTimeString('id-ID')}
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell className="p-4 align-middle">
+                  <TableCell className="p-6 align-middle">
                     {form.updated_at && (
                       <div className="flex flex-col">
-                        <span className="text-sm">
+                        <span className="text-sm font-medium text-gray-900">
                           {new Date(form.updated_at).toLocaleDateString('id-ID')}
                         </span>
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs text-gray-600 mt-1">
                           {new Date(form.updated_at).toLocaleTimeString('id-ID')}
                         </span>
                       </div>
                     )}
                   </TableCell>
-                  <TableCell className="p-4 align-middle">
+                  <TableCell className="p-6 align-middle">
                     <Button
                       onClick={() => onViewDetails(form)}
                       variant="outline"
                       size="sm"
-                      className="flex items-center whitespace-nowrap"
+                      className="flex items-center whitespace-nowrap font-semibold shadow-md hover:shadow-lg transition-all duration-300"
                     >
-                      <Eye className="mr-1.5 h-4 w-4" />
+                      <Eye className="mr-2 h-4 w-4" />
                       Detail
                     </Button>
                   </TableCell>
@@ -128,8 +130,8 @@ export const VerificationTable: React.FC<VerificationTableProps> = ({
           </Table>
         </div>
       </div>
-      <div className="mt-4 flex items-center justify-between px-2">
-        <div className="text-sm text-muted-foreground">
+      <div className="mt-6 flex items-center justify-between px-6 py-4 bg-gray-50 rounded-xl">
+        <div className="text-sm text-gray-600 font-medium">
           Total {totalItems} data
         </div>
         <PaginationComponent

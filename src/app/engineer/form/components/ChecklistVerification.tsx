@@ -27,22 +27,26 @@ export const ChecklistVerification: React.FC<ChecklistVerificationProps> = ({
   isResubmit
 }) => {
   return (
-    <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b">
-        <CardTitle className="flex items-center text-lg sm:text-xl">
-          <CheckCircle className="mr-2 h-5 w-5 text-green-600" />
+    <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0">
+      <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-100">
+        <CardTitle className="flex items-center text-xl font-bold">
+          <div className="p-2 bg-green-100 rounded-xl mr-3">
+            <CheckCircle className="h-6 w-6 text-green-600" />
+          </div>
           Checklist Verifikasi
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <CardContent className="p-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {checklistItems.map((item) => {
             const Icon = item.icon;
             return (
-              <div key={item.name} className="flex items-center p-4 border rounded-lg hover:bg-gray-50 transition">
-                <Icon className="mr-3 h-5 w-5 text-gray-500 flex-shrink-0" />
+              <div key={item.name} className="flex items-center p-5 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 hover:shadow-md">
+                <div className="p-2 bg-gray-100 rounded-lg mr-4 flex-shrink-0">
+                  <Icon className="h-5 w-5 text-gray-600" />
+                </div>
                 <div className="flex-1">
-                  <Label className="block text-sm font-medium text-gray-700">
+                  <Label className="block text-sm font-semibold text-gray-800 mb-2">
                     {item.label}
                   </Label>
                   <Controller
@@ -53,7 +57,7 @@ export const ChecklistVerification: React.FC<ChecklistVerificationProps> = ({
                         {...field}
                         value={field.value ? 'OK' : 'NOT OK'}
                         onChange={(e) => field.onChange(e.target.value === 'OK')}
-                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                        className="block w-full pl-4 pr-10 py-2.5 text-sm border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg transition-all duration-300 hover:border-gray-400 bg-white font-medium"
                         disabled={isResubmit}
                       >
                         <option value="OK">OK</option>

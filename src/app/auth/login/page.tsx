@@ -88,14 +88,14 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 py-6 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <div className="mx-auto flex items-center justify-center">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 rounded-2xl transform rotate-6 blur-md opacity-20"></div>
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 rounded-2xl transform -rotate-6 blur-md opacity-20"></div>
-              <div className="relative mx-auto h-20 w-20 flex items-center justify-center">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-600 rounded-3xl transform rotate-6 blur-lg opacity-30"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-600 rounded-3xl transform -rotate-6 blur-lg opacity-30"></div>
+              <div className="relative mx-auto h-24 w-24 flex items-center justify-center">
                 <svg viewBox="0 0 24 24" className="h-16 w-16 text-white" fill="currentColor">
                   <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                   <circle cx="12" cy="12" r="3" className="text-blue-200"/>
@@ -111,9 +111,9 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <div className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl border border-white/10 p-8 transition-all duration-300 hover:shadow-2xl">
+        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-10 transition-all duration-500 hover:shadow-3xl hover:bg-white/15">
           <div className="text-center mb-8">
-            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-900/50">
+            <div className="mx-auto flex items-center justify-center h-14 w-14 rounded-2xl bg-blue-900/60 backdrop-blur-sm">
               <Fingerprint className="h-6 w-6 text-white" />
             </div>
             <h2 className="mt-4 text-2xl font-bold text-white">
@@ -138,7 +138,7 @@ export default function LoginPage() {
                     id="username"
                     type="text"
                     {...register('username', { required: 'Username wajib diisi' })}
-                    className="pl-10 py-3 text-base bg-blue-900/30 border-blue-700 focus:border-blue-400 focus:ring-blue-400 text-white placeholder-white transition-all duration-200"
+                    className="pl-12 py-4 text-base bg-blue-900/40 border-blue-600/50 focus:border-blue-400 focus:ring-blue-400 text-white placeholder-white/80 transition-all duration-300 hover:bg-blue-900/50 rounded-xl"
                     placeholder="Masukkan username Anda"
                     disabled={isLoading}
                   />
@@ -174,7 +174,7 @@ export default function LoginPage() {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     {...register('password', { required: 'Password wajib diisi' })}
-                    className="pl-10 pr-10 py-3 text-base bg-blue-900/30 border-blue-700 focus:border-blue-400 focus:ring-blue-400 text-white placeholder-white transition-all duration-200"
+                    className="pl-12 pr-12 py-4 text-base bg-blue-900/40 border-blue-600/50 focus:border-blue-400 focus:ring-blue-400 text-white placeholder-white/80 transition-all duration-300 hover:bg-blue-900/50 rounded-xl"
                     placeholder="Masukkan password Anda"
                     disabled={isLoading}
                   />
@@ -205,7 +205,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white py-3 rounded-xl shadow-lg flex items-center justify-center text-base font-medium transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+                className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white py-4 rounded-xl shadow-xl flex items-center justify-center text-base font-semibold transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
               >
                 {isLoading ? (
                   <>

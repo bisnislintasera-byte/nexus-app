@@ -175,18 +175,18 @@ export default function FileUpload({
   }
 
   return (
-    <div className={`space-y-2 ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
-      <label className="text-sm font-medium text-gray-700 flex items-center">
+    <div className={`space-y-3 ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
+      <label className="text-sm font-semibold text-gray-800 flex items-center">
         <Camera className="mr-2 h-4 w-4 text-gray-500" />
         {label}
         {isResubmit && status === 'REJECTED' && (
-          <span className="ml-2">
+          <span className="ml-3">
             <PhotoStatusIndicator status={status} komentar={komentar} />
           </span>
         )}
       </label>
 
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-6">
         <div className="flex-1">
           {/* File input langsung pakai capture */}
           <input
@@ -204,17 +204,17 @@ export default function FileUpload({
             variant="outline"
             onClick={() => fileInputRef.current?.click()}
             disabled={isUploading || disabled || (isResubmit && status !== 'REJECTED')}
-            className="w-full flex items-center justify-center gap-2"
+            className="w-full flex items-center justify-center gap-3 py-4 rounded-xl border-2 border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-all duration-300"
           >
             {isUploading || isProcessing ? (
               <>
                 <Loader2 className="h-5 w-5 animate-spin" />
-                <span>{isProcessing ? 'Memproses...' : 'Mengunggah...'}</span>
+                <span className="font-medium">{isProcessing ? 'Memproses...' : 'Mengunggah...'}</span>
               </>
             ) : (
               <>
                 <Camera className="h-5 w-5" />
-                <span>Ambil Foto dengan Kamera</span>
+                <span className="font-medium">Ambil Foto dengan Kamera</span>
               </>
             )}
           </Button>
@@ -222,16 +222,16 @@ export default function FileUpload({
 
         {previewUrl && (
           <div className="relative">
-            <div className="h-16 w-16 rounded-md overflow-hidden border">
+            <div className="h-20 w-20 rounded-xl overflow-hidden border-2 border-gray-200 shadow-md">
               <img src={previewUrl} alt={label} className="h-full w-full object-cover" />
             </div>
             <button
               type="button"
               onClick={handleRemove}
-              className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-red-500 text-white flex items-center justify-center"
+              className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110"
               aria-label={`Hapus foto ${label}`}
             >
-              <X className="h-3 w-3" />
+              <X className="h-3.5 w-3.5" />
             </button>
           </div>
         )}
@@ -239,15 +239,15 @@ export default function FileUpload({
 
       {/* Loader status */}
       {(isUploading || isProcessing) && (
-        <div className="mt-2 p-2 bg-blue-50 border border-blue-100 rounded-md text-sm text-blue-600 flex items-center">
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        <div className="mt-3 p-3 bg-blue-50 border border-blue-200/50 rounded-xl text-sm text-blue-700 flex items-center">
+          <Loader2 className="mr-3 h-4 w-4 animate-spin" />
           {isProcessing ? 'Memproses watermark...' : 'Mengunggah foto...'}
         </div>
       )}
 
       {/* Info */}
       {!previewUrl && !isUploading && (
-        <div className="text-xs text-gray-500 flex items-center gap-2">
+        <div className="text-xs text-gray-600 flex items-center gap-2 font-medium">
           <AlertCircle className="h-3 w-3" />
           Kamera akan terbuka saat klik tombol
         </div>

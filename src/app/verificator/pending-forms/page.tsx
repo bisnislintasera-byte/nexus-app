@@ -357,63 +357,68 @@ function VerificationPageContent() {
   );
 
   const renderFormDetail = () => (
-    <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+    <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0">
+      <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
         <div className="flex justify-between items-center">
-          <CardTitle className="flex items-center text-xl">
-            <FileText className="mr-2 h-5 w-5 text-blue-600" />
+          <CardTitle className="flex items-center text-xl font-bold">
+            <div className="p-2 bg-blue-100 rounded-xl mr-3">
+              <FileText className="h-6 w-6 text-blue-600" />
+            </div>
             Detail Form Verifikasi
           </CardTitle>
           <Button
             onClick={() => setSelectedForm(null)}
             variant="ghost"
             size="sm"
+            className="rounded-lg hover:bg-blue-100 transition-all duration-200"
           >
             <XCircle className="h-5 w-5" />
           </Button>
         </div>
-        <p className="text-sm text-gray-600 mt-2">
+        <p className="text-base text-gray-700 mt-3 font-medium">
           TID: {selectedForm?.TID} | Lokasi: {selectedForm?.LOKASI}
         </p>
       </CardHeader>
 
-      <CardContent className="p-6">
+      <CardContent className="p-8">
         <PhotoGallery
-          photos={{
+      <div className="space-y-6">
             FOTO_MINI_PC_FULL: selectedForm?.FOTO_MINI_PC_FULL || '',
-            FOTO_SN_MINI_PC: selectedForm?.FOTO_SN_MINI_PC || '',
+          <Label htmlFor="comment" className="text-gray-800 font-semibold text-sm">
             FOTO_TID: selectedForm?.FOTO_TID || '',
             FOTO_DASHBOARD_VIMS: selectedForm?.FOTO_DASHBOARD_VIMS || '',
             FOTO_SIGNAL_MODEM: selectedForm?.FOTO_SIGNAL_MODEM || '',
             FOTO_STORAGE_MINI: selectedForm?.FOTO_STORAGE_MINI || '',
-            FOTO_TEMUAN_RUSAK: selectedForm?.FOTO_TEMUAN_RUSAK || ''
+            rows={5}
           }}
           details={photoDetails}
           onReject={handleRejectPhoto}
-          onCommentChange={handlePhotoCommentChange}
+            className="mt-2"
           disabled={selectedForm?.status_verifikasi !== 'PENDING'}
         />
-
+        <div className="flex flex-col sm:flex-row justify-end gap-4">
         {selectedForm?.status_verifikasi === 'PENDING' && renderVerificationActions()}
       </CardContent>
     </Card>
-  );
+            className="w-full sm:w-auto px-6 py-3 font-semibold"
 
-  const renderFormList = () => (
-    <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-        <CardTitle className="flex items-center text-xl">
-          <ShieldCheck className="mr-2 h-5 w-5 text-blue-600" />
-          Daftar Form Verifikasi
+            <XCircle className="mr-2 h-5 w-5" />
+    <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0">
+      <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+        <CardTitle className="flex items-center text-xl font-bold">
+          <div className="p-2 bg-blue-100 rounded-xl mr-3">
+            <ShieldCheck className="h-6 w-6 text-blue-600" />
+          </div>
+            className="w-full sm:w-auto bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 px-6 py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <VerificationTable
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
           data={forms}
           loading={loading}
           onViewDetails={handleViewDetails}
           pagination={{
-            currentPage,
+                <XCircle className="mr-2 h-5 w-5" />
             totalPages: Math.ceil(totalItems / pageSize),
             pageSize,
             totalItems,
@@ -421,16 +426,16 @@ function VerificationPageContent() {
             onPageSizeChange: setPageSize
           }}
         />
-      </CardContent>
+            className="w-full sm:w-auto bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 px-6 py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
     </Card>
   );
 
-  // Main Render
-  return (
-    <div className="container mx-auto py-4 sm:py-8 px-4">
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+    <div className="mt-10 pt-8 border-t border-gray-200">
+      <h3 className="text-xl font-bold text-gray-900 mb-6">
       {renderHeader()}
       <ErrorBoundary>
-        <Suspense fallback={<SuspenseLoader />}>
+                <CheckCircle className="mr-2 h-5 w-5" />
           {renderFilters()}
           {selectedForm ? renderFormDetail() : renderFormList()}
         </Suspense>
@@ -441,7 +446,7 @@ function VerificationPageContent() {
 
 export default function VerificationPage() {
   return (
-    <ErrorBoundary>
+    <div className="container mx-auto py-8 px-4">
       <Suspense fallback={<SuspenseLoader />}>
         <VerificationPageContent />
       </Suspense>

@@ -251,27 +251,27 @@ export default function VerificatorProfilePage() {
     <div className="container mx-auto py-8">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Profil Verifikator</h1>
-          <p className="text-gray-600 mt-2">Detail dan analitik kinerja verifikasi</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Profil Verifikator</h1>
+          <p className="text-gray-600 mt-3 text-lg">Detail dan analitik kinerja verifikasi</p>
         </div>
-        <div className="flex space-x-2">
+        <div className="flex space-x-3">
           <Button
             onClick={() => router.back()}
             variant="outline"
-            className="flex items-center"
+            className="flex items-center shadow-md hover:shadow-lg transition-all duration-300"
           >
-            <XCircle className="mr-2 h-4 w-4" />
+            <XCircle className="mr-2 h-5 w-5" />
             Kembali
           </Button>
           <Button
             onClick={handleExport}
             disabled={exporting}
-            className="flex items-center bg-green-600 hover:bg-green-700"
+            className="flex items-center bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
           >
             {exporting ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
             ) : (
-              <Download className="mr-2 h-4 w-4" />
+              <Download className="mr-2 h-5 w-5" />
             )}
             Export PNG
           </Button>
@@ -280,64 +280,64 @@ export default function VerificatorProfilePage() {
 
       <div ref={analyticsRef}>
         {/* Profile Header */}
-        <Card className="bg-white shadow-lg rounded-xl overflow-hidden mb-8">
-          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+        <Card className="bg-white shadow-xl rounded-2xl overflow-hidden mb-10 border-0">
+          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
             <div className="flex items-center">
-              <div className="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16 flex items-center justify-center">
-                <User className="h-8 w-8 text-gray-400" />
+              <div className="bg-gradient-to-br from-gray-100 to-gray-200 border-2 border-dashed border-gray-300 rounded-2xl w-20 h-20 flex items-center justify-center">
+                <User className="h-10 w-10 text-gray-500" />
               </div>
-              <div className="ml-4">
-                <CardTitle className="text-2xl text-gray-900">
+              <div className="ml-6">
+                <CardTitle className="text-2xl font-bold text-gray-900">
                   {kpiData?.nama_verifikator}
                 </CardTitle>
-                <p className="text-gray-600">ID: {kpiData?.verifikator_id}</p>
+                <p className="text-gray-600 font-medium mt-1">ID: {kpiData?.verifikator_id}</p>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-blue-50 rounded-lg p-4 border border-blue-100 transition-all duration-300 hover:shadow-md">
+          <CardContent className="p-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-blue-50 rounded-xl p-6 border border-blue-200/50 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
                 <div className="flex items-center">
-                  <div className="p-3 bg-blue-100 rounded-full">
+                  <div className="p-3 bg-blue-100 rounded-xl">
                     <FileCheck className="h-6 w-6 text-blue-600" />
                   </div>
-                  <div className="ml-4">
-                    <p className="text-sm text-gray-600">Total Verifikasi</p>
-                    <p className="text-2xl font-bold text-gray-900">{kpiData.total_verifikasi || 0}</p>
+                  <div className="ml-5">
+                    <p className="text-sm text-gray-700 font-semibold">Total Verifikasi</p>
+                    <p className="text-3xl font-bold text-gray-900 mt-1">{kpiData.total_verifikasi || 0}</p>
                   </div>
                 </div>
               </div>
-              <div className="bg-green-50 rounded-lg p-4 border border-green-100 transition-all duration-300 hover:shadow-md">
+              <div className="bg-green-50 rounded-xl p-6 border border-green-200/50 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
                 <div className="flex items-center">
-                  <div className="p-3 bg-green-100 rounded-full">
+                  <div className="p-3 bg-green-100 rounded-xl">
                     <CheckCircle className="h-6 w-6 text-green-600" />
                   </div>
-                  <div className="ml-4">
-                    <p className="text-sm text-gray-600">Sukses</p>
-                    <p className="text-2xl font-bold text-gray-900">{kpiData.total_sukses || 0}</p>
+                  <div className="ml-5">
+                    <p className="text-sm text-gray-700 font-semibold">Sukses</p>
+                    <p className="text-3xl font-bold text-gray-900 mt-1">{kpiData.total_sukses || 0}</p>
                   </div>
                 </div>
               </div>
-              <div className="bg-red-50 rounded-lg p-4 border border-red-100 transition-all duration-300 hover:shadow-md">
+              <div className="bg-red-50 rounded-xl p-6 border border-red-200/50 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
                 <div className="flex items-center">
-                  <div className="p-3 bg-red-100 rounded-full">
+                  <div className="p-3 bg-red-100 rounded-xl">
                     <XCircle className="h-6 w-6 text-red-600" />
                   </div>
-                  <div className="ml-4">
-                    <p className="text-sm text-gray-600">Gagal</p>
-                    <p className="text-2xl font-bold text-gray-900">{kpiData.total_gagal || 0}</p>
+                  <div className="ml-5">
+                    <p className="text-sm text-gray-700 font-semibold">Gagal</p>
+                    <p className="text-3xl font-bold text-gray-900 mt-1">{kpiData.total_gagal || 0}</p>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="mt-6 bg-yellow-50 rounded-lg p-4 border border-yellow-100 transition-all duration-300 hover:shadow-md">
+            <div className="mt-8 bg-amber-50 rounded-xl p-6 border border-amber-200/50 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
               <div className="flex items-center">
-                <div className="p-3 bg-yellow-100 rounded-full">
-                  <Clock className="h-6 w-6 text-yellow-600" />
+                <div className="p-3 bg-amber-100 rounded-xl">
+                  <Clock className="h-6 w-6 text-amber-600" />
                 </div>
-                <div className="ml-4">
-                  <p className="text-sm text-gray-600">Rata-rata Waktu Verifikasi</p>
-                  <p className="text-2xl font-bold text-gray-900">{kpiData.rata_rata_waktu_verifikasi || '0 menit'}</p>
+                <div className="ml-5">
+                  <p className="text-sm text-gray-700 font-semibold">Rata-rata Waktu Verifikasi</p>
+                  <p className="text-3xl font-bold text-gray-900 mt-1">{kpiData.rata_rata_waktu_verifikasi || '0 menit'}</p>
                 </div>
               </div>
             </div>
@@ -345,45 +345,54 @@ export default function VerificatorProfilePage() {
         </Card>
 
         {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-10">
           {/* Daily Trend Chart */}
-          <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-              <CardTitle className="flex items-center text-lg">
-                <TrendingUp className="mr-2 h-5 w-5 text-blue-600" />
+          <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0">
+            <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+              <CardTitle className="flex items-center text-xl font-bold">
+                <div className="p-2 bg-blue-100 rounded-xl mr-3">
+                  <TrendingUp className="h-6 w-6 text-blue-600" />
+                </div>
                 Tren Aktivitas Harian
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-6">
+            <CardContent className="p-8">
               <div className="h-80">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart
                     data={kpiData?.trend_harian}
-                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                     <XAxis 
                       dataKey="tanggal" 
                       tickFormatter={(value) => {
                         const date = new Date(value);
                         return date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' });
                       }}
+                      stroke="#6b7280"
                     />
-                    <YAxis />
+                    <YAxis stroke="#6b7280" />
                     <Tooltip 
                       formatter={(value) => [value, 'Jumlah']}
                       labelFormatter={(value) => {
                         const date = new Date(value);
                         return date.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
                       }}
+                      contentStyle={{
+                        backgroundColor: '#ffffff',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '12px',
+                        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
+                      }}
                     />
                     <Line 
                       type="monotone" 
                       dataKey="jumlah" 
-                      stroke="#3b82f6" 
-                      strokeWidth={2}
-                      dot={{ r: 4 }}
-                      activeDot={{ r: 6 }} 
+                      stroke="#2563eb" 
+                      strokeWidth={3}
+                      dot={{ r: 5, fill: '#2563eb' }}
+                      activeDot={{ r: 7, fill: '#1d4ed8' }} 
                     />
                   </LineChart>
                 </ResponsiveContainer>
@@ -392,14 +401,16 @@ export default function VerificatorProfilePage() {
           </Card>
 
           {/* Success/Failure Distribution */}
-          <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-              <CardTitle className="flex items-center text-lg">
-                <PieChart className="mr-2 h-5 w-5 text-blue-600" />
+          <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0">
+            <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+              <CardTitle className="flex items-center text-xl font-bold">
+                <div className="p-2 bg-blue-100 rounded-xl mr-3">
+                  <PieChart className="h-6 w-6 text-blue-600" />
+                </div>
                 Distribusi Hasil Verifikasi
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-6">
+            <CardContent className="p-8">
               <div className="h-80">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -408,7 +419,7 @@ export default function VerificatorProfilePage() {
                       cx="50%"
                       cy="50%"
                       labelLine={false}
-                      outerRadius={80}
+                      outerRadius={100}
                       fill="#8884d8"
                       dataKey="value"
                       label={(entry) => {
@@ -421,7 +432,15 @@ export default function VerificatorProfilePage() {
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(value) => [value, 'Jumlah']} />
+                    <Tooltip 
+                      formatter={(value) => [value, 'Jumlah']}
+                      contentStyle={{
+                        backgroundColor: '#ffffff',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '12px',
+                        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
+                      }}
+                    />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
@@ -430,51 +449,53 @@ export default function VerificatorProfilePage() {
         </div>
 
         {/* Per Period Data */}
-        <Card className="bg-white shadow-lg rounded-xl overflow-hidden mb-8">
-          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-            <CardTitle className="flex items-center text-lg">
-              <Calendar className="mr-2 h-5 w-5 text-blue-600" />
+        <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0 mb-10">
+          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+            <CardTitle className="flex items-center text-xl font-bold">
+              <div className="p-2 bg-blue-100 rounded-xl mr-3">
+                <Calendar className="h-6 w-6 text-blue-600" />
+              </div>
               Detail Verifikasi Per Periode
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-8">
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-gray-200 rounded-xl overflow-hidden">
+                <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
-                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider md:px-6">
+                    <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                       Periode
                     </th>
-                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider md:px-6">
+                    <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                       Total
                     </th>
-                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider md:px-6">
+                    <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                       Sukses
                     </th>
-                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider md:px-6">
+                    <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                       Gagal
                     </th>
-                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider md:px-6">
+                    <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                       Rata-rata Waktu
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white divide-y divide-gray-100">
                   {kpiData?.per_periode.map((periode, index) => (
-                    <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                      <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 md:px-6">
+                    <tr key={index} className={`transition-colors duration-200 hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`}>
+                      <td className="px-6 py-5 whitespace-nowrap text-sm font-semibold text-gray-900">
                         {periode.periode}
                       </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 md:px-6">
+                      <td className="px-6 py-5 whitespace-nowrap text-sm font-medium text-gray-700">
                         {periode.total}
                       </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-sm text-green-600 md:px-6">
+                      <td className="px-6 py-5 whitespace-nowrap text-sm font-medium text-green-700">
                         {periode.sukses}
                       </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-sm text-red-600 md:px-6">
+                      <td className="px-6 py-5 whitespace-nowrap text-sm font-medium text-red-700">
                         {periode.gagal}
                       </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 md:px-6">
+                      <td className="px-6 py-5 whitespace-nowrap text-sm font-medium text-gray-700">
                         {periode.rata_rata_waktu}
                       </td>
                     </tr>
@@ -486,45 +507,49 @@ export default function VerificatorProfilePage() {
         </Card>
 
         {/* Recent Activity Logs */}
-        <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-            <CardTitle className="flex items-center text-lg">
-              <Clock className="mr-2 h-5 w-5 text-blue-600" />
+        <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0">
+          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+            <CardTitle className="flex items-center text-xl font-bold">
+              <div className="p-2 bg-blue-100 rounded-xl mr-3">
+                <Clock className="h-6 w-6 text-blue-600" />
+              </div>
               Aktivitas Terbaru
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             {kpiData && kpiData.log_terbaru.length === 0 ? (
-              <div className="text-center py-12">
-                <Clock className="mx-auto h-12 w-12 text-gray-400" />
-                <h3 className="mt-2 text-sm font-medium text-gray-900">Tidak ada aktivitas</h3>
-                <p className="mt-1 text-sm text-gray-500">
+              <div className="text-center py-20">
+                <div className="mx-auto h-16 w-16 rounded-2xl bg-gray-100 flex items-center justify-center mb-6">
+                  <Clock className="h-8 w-8 text-gray-400" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Tidak ada aktivitas</h3>
+                <p className="text-gray-500 text-lg">
                   Belum ada aktivitas verifikasi yang dicatat.
                 </p>
               </div>
             ) : (
-              <div className="divide-y divide-gray-200">
+              <div className="divide-y divide-gray-100">
                 {kpiData?.log_terbaru.map((log, index) => (
-                  <div key={index} className="px-6 py-4 hover:bg-gray-50 transition">
+                  <div key={index} className="px-8 py-6 hover:bg-gray-50 transition-colors duration-200">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm font-medium text-blue-600">
+                        <p className="text-sm font-semibold text-blue-600">
                           Form ID: {log.form_id}
                         </p>
-                        <div className="flex items-center mt-1">
+                        <div className="flex items-center mt-2">
                           {getActionTypeBadge(log.action_type)}
-                          <span className="ml-2 text-sm text-gray-500">
+                          <span className="ml-3 text-sm text-gray-600 font-medium">
                             {new Date(log.action_time).toLocaleString('id-ID')}
                           </span>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center">
                         {getStatusBadge(log.status_verifikasi)}
                       </div>
                     </div>
                     {log.comment_verifikasi && (
-                      <div className="mt-2 text-sm text-gray-600 bg-gray-50 p-2 rounded">
-                        <p>{log.comment_verifikasi}</p>
+                      <div className="mt-4 text-sm text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200">
+                        <p className="leading-relaxed">{log.comment_verifikasi}</p>
                       </div>
                     )}
                   </div>

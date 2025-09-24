@@ -9,10 +9,12 @@ const PhotoRejectionComment: React.FC<PhotoRejectionCommentProps> = ({ komentar 
   if (!komentar) return null;
 
   return (
-    <div className="mt-2 p-3 bg-red-50 rounded-lg border border-red-200">
+    <div className="p-4 bg-red-50 rounded-xl border border-red-200/50 shadow-sm">
       <div className="flex items-start">
-        <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 mr-2 flex-shrink-0" />
-        <p className="text-red-800 text-sm">{komentar}</p>
+        <div className="p-1 bg-red-100 rounded-lg mr-3 flex-shrink-0">
+          <AlertCircle className="h-5 w-5 text-red-600" />
+        </div>
+        <p className="text-red-900 text-sm leading-relaxed font-medium">{komentar}</p>
       </div>
     </div>
   );

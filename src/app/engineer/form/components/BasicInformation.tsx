@@ -78,16 +78,18 @@ export const BasicInformation: React.FC<BasicInformationProps> = ({
     return result;
   };
   return (
-    <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-        <CardTitle className="flex items-center text-lg sm:text-xl">
-          <FileText className="mr-2 h-5 w-5 text-blue-600" />
+    <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0">
+      <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+        <CardTitle className="flex items-center text-xl font-bold">
+          <div className="p-2 bg-blue-100 rounded-xl mr-3">
+            <FileText className="h-6 w-6 text-blue-600" />
+          </div>
           Informasi Dasar
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-6">
-        <div className="space-y-2">
-          <Label htmlFor="TID" className="text-gray-700 font-medium">
+      <CardContent className="p-8">
+        <div className="space-y-4">
+          <Label htmlFor="TID" className="text-gray-800 font-semibold text-sm">
             Terminal ID (TID) <span className="text-red-500">*</span>
           </Label>
           <Controller
@@ -133,12 +135,12 @@ export const BasicInformation: React.FC<BasicInformationProps> = ({
                       }
                     : null
                 }
-                className="text-sm"
+                className="text-base"
               />
             )}
           />
           {errors.TID && (
-            <p className="text-sm text-red-600 flex items-center">
+            <p className="text-sm text-red-600 flex items-center font-medium">
               <AlertCircle className="mr-1 h-4 w-4" />
               {errors.TID.message}
             </p>
@@ -146,7 +148,7 @@ export const BasicInformation: React.FC<BasicInformationProps> = ({
         </div>
 
         {/* Snapshot Master Data */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8 p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200/50">
           {[
             { field: 'KANWIL', label: 'Kanwil' },
             { field: 'KC_SUPERVISI', label: 'KC Supervisi' },
@@ -157,7 +159,7 @@ export const BasicInformation: React.FC<BasicInformationProps> = ({
             { field: 'SN_MINI_PC', label: 'SN Mini PC', fullWidth: true }
           ].map(({ field, label, fullWidth }) => (
             <div key={field} className={fullWidth ? 'sm:col-span-2' : ''}>
-              <Label className="text-xs text-gray-500">{label}</Label>
+              <Label className="text-sm text-gray-600 font-semibold">{label}</Label>
               <Controller
                 name={field as keyof FormVerificationCreate}
                 control={control}
@@ -165,7 +167,7 @@ export const BasicInformation: React.FC<BasicInformationProps> = ({
                   <Input
                     value={typeof value === 'boolean' ? String(value) : value || ''}
                     readOnly
-                    className="bg-gray-100 border-0"
+                    className="bg-white border border-gray-200 mt-1 h-10 font-medium"
                   />
                 )}
               />

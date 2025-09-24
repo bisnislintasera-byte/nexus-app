@@ -99,78 +99,86 @@ export default function VerificatorDashboard() {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
         {/* Statistik Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
-          <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200 shadow-sm hover:shadow-md transition-shadow">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          <Card className="bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-yellow-800">Pending</CardTitle>
-              <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600" />
+              <CardTitle className="text-sm font-semibold text-amber-900">Pending</CardTitle>
+              <div className="p-2 bg-amber-200/50 rounded-xl">
+                <Clock className="h-5 w-5 text-amber-700" />
+              </div>
             </CardHeader>
             <CardContent>
               {loading ? (
-                <div className="flex items-center justify-center h-8">
-                  <Loader2 className="h-4 w-4 animate-spin text-yellow-600" />
+                <div className="flex items-center justify-center h-10">
+                  <Loader2 className="h-4 w-4 animate-spin text-amber-600" />
                 </div>
               ) : (
                 <>
-                  <div className="text-xl sm:text-2xl font-bold text-yellow-900">{stats.pendingForms}</div>
-                  <p className="text-xs sm:text-sm text-yellow-700 mt-1">Form menunggu verifikasi</p>
+                  <div className="text-3xl font-bold text-amber-900">{stats.pendingForms}</div>
+                  <p className="text-sm text-amber-700 mt-1 font-medium">Form menunggu verifikasi</p>
                 </>
               )}
             </CardContent>
           </Card>
           
-          <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200 shadow-sm hover:shadow-md transition-shadow">
+          <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-green-800">Disetujui</CardTitle>
-              <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
+              <CardTitle className="text-sm font-semibold text-green-900">Disetujui</CardTitle>
+              <div className="p-2 bg-green-200/50 rounded-xl">
+                <CheckCircle className="h-5 w-5 text-green-700" />
+              </div>
             </CardHeader>
             <CardContent>
               {loading ? (
-                <div className="flex items-center justify-center h-8">
+                <div className="flex items-center justify-center h-10">
                   <Loader2 className="h-4 w-4 animate-spin text-green-600" />
                 </div>
               ) : (
                 <>
-                  <div className="text-xl sm:text-2xl font-bold text-green-900">{stats.approvedForms}</div>
-                  <p className="text-xs sm:text-sm text-green-700 mt-1">Form yang telah disetujui</p>
+                  <div className="text-3xl font-bold text-green-900">{stats.approvedForms}</div>
+                  <p className="text-sm text-green-700 mt-1 font-medium">Form yang telah disetujui</p>
                 </>
               )}
             </CardContent>
           </Card>
           
-          <Card className="bg-gradient-to-br from-red-50 to-red-100 border-red-200 shadow-sm hover:shadow-md transition-shadow">
+          <Card className="bg-gradient-to-br from-red-50 to-red-100 border-red-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-red-800">Ditolak</CardTitle>
-              <XCircle className="h-5 w-5 sm:h-6 sm:w-6 text-red-600" />
+              <CardTitle className="text-sm font-semibold text-red-900">Ditolak</CardTitle>
+              <div className="p-2 bg-red-200/50 rounded-xl">
+                <XCircle className="h-5 w-5 text-red-700" />
+              </div>
             </CardHeader>
             <CardContent>
               {loading ? (
-                <div className="flex items-center justify-center h-8">
+                <div className="flex items-center justify-center h-10">
                   <Loader2 className="h-4 w-4 animate-spin text-red-600" />
                 </div>
               ) : (
                 <>
-                  <div className="text-xl sm:text-2xl font-bold text-red-900">{stats.rejectedForms}</div>
-                  <p className="text-xs sm:text-sm text-red-700 mt-1">Form yang ditolak</p>
+                  <div className="text-3xl font-bold text-red-900">{stats.rejectedForms}</div>
+                  <p className="text-sm text-red-700 mt-1 font-medium">Form yang ditolak</p>
                 </>
               )}
             </CardContent>
           </Card>
           
-          <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 shadow-sm hover:shadow-md transition-shadow">
+          <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-blue-800">Hari Ini</CardTitle>
-              <ShieldCheck className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+              <CardTitle className="text-sm font-semibold text-blue-900">Hari Ini</CardTitle>
+              <div className="p-2 bg-blue-200/50 rounded-xl">
+                <ShieldCheck className="h-5 w-5 text-blue-700" />
+              </div>
             </CardHeader>
             <CardContent>
               {loading ? (
-                <div className="flex items-center justify-center h-8">
+                <div className="flex items-center justify-center h-10">
                   <Loader2 className="h-4 w-4 animate-spin text-blue-600" />
                 </div>
               ) : (
                 <>
-                  <div className="text-xl sm:text-2xl font-bold text-blue-900">{stats.todayVerified}</div>
-                  <p className="text-xs sm:text-sm text-blue-700 mt-1">Form diverifikasi hari ini</p>
+                  <div className="text-3xl font-bold text-blue-900">{stats.todayVerified}</div>
+                  <p className="text-sm text-blue-700 mt-1 font-medium">Form diverifikasi hari ini</p>
                 </>
               )}
             </CardContent>
@@ -178,26 +186,28 @@ export default function VerificatorDashboard() {
         </div>
         
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
-          <Card className="lg:col-span-2 bg-white shadow rounded-xl overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+          <Card className="lg:col-span-2 bg-white shadow-xl rounded-2xl overflow-hidden border-0">
             <CardHeader>
-              <CardTitle className="flex items-center text-lg sm:text-xl">
-                <ShieldCheck className="mr-2 h-5 w-5 text-green-600" />
+              <CardTitle className="flex items-center text-xl font-bold">
+                <div className="p-2 bg-green-100 rounded-xl mr-3">
+                  <ShieldCheck className="h-6 w-6 text-green-600" />
+                </div>
                 Aksi Verifikasi
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-8">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Button 
                   onClick={() => router.push('/verificator/pending-forms')}
-                  className="group relative bg-white border-2 border-indigo-100 hover:border-indigo-200 text-gray-700 py-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
+                  className="group relative bg-white border-2 border-indigo-200 hover:border-indigo-300 text-gray-700 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-50 to-blue-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-50 to-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
                   <div className="relative flex items-center justify-center gap-3">
-                    <Eye className="h-5 w-5 text-indigo-600" />
-                    <span className="font-medium">Verifikasi Form Pending</span>
+                    <Eye className="h-6 w-6 text-indigo-600 group-hover:scale-110 transition-transform duration-300" />
+                    <span className="font-semibold">Verifikasi Form Pending</span>
                     {stats.pendingForms > 0 && (
-                      <span className="px-2 py-1 text-xs font-semibold bg-indigo-100 text-indigo-700 rounded-full">
+                      <span className="px-3 py-1 text-xs font-bold bg-indigo-100 text-indigo-700 rounded-full">
                         {stats.pendingForms} form
                       </span>
                     )}
@@ -206,14 +216,14 @@ export default function VerificatorDashboard() {
                 
                 <Button 
                   onClick={() => router.push('/verificator/pending-forms')}
-                  className="group relative bg-white border-2 border-emerald-100 hover:border-emerald-200 text-gray-700 py-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
+                  className="group relative bg-white border-2 border-emerald-200 hover:border-emerald-300 text-gray-700 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-50 to-green-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-50 to-green-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
                   <div className="relative flex items-center justify-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-emerald-600" />
-                    <span className="font-medium">Form Disetujui</span>
+                    <CheckCircle className="h-6 w-6 text-emerald-600 group-hover:scale-110 transition-transform duration-300" />
+                    <span className="font-semibold">Form Disetujui</span>
                     {stats.approvedForms > 0 && (
-                      <span className="px-2 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700 rounded-full">
+                      <span className="px-3 py-1 text-xs font-bold bg-emerald-100 text-emerald-700 rounded-full">
                         {stats.approvedForms} form
                       </span>
                     )}
@@ -222,14 +232,14 @@ export default function VerificatorDashboard() {
                 
                 <Button 
                   onClick={() => router.push('/verificator/pending-forms')}
-                  className="group relative bg-white border-2 border-red-100 hover:border-red-200 text-gray-700 py-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
+                  className="group relative bg-white border-2 border-red-200 hover:border-red-300 text-gray-700 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-red-50 to-orange-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-50 to-orange-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
                   <div className="relative flex items-center justify-center gap-3">
-                    <XCircle className="h-5 w-5 text-red-600" />
-                    <span className="font-medium">Form Ditolak</span>
+                    <XCircle className="h-6 w-6 text-red-600 group-hover:scale-110 transition-transform duration-300" />
+                    <span className="font-semibold">Form Ditolak</span>
                     {stats.rejectedForms > 0 && (
-                      <span className="px-2 py-1 text-xs font-semibold bg-red-100 text-red-700 rounded-full">
+                      <span className="px-3 py-1 text-xs font-bold bg-red-100 text-red-700 rounded-full">
                         {stats.rejectedForms} form
                       </span>
                     )}
@@ -238,50 +248,52 @@ export default function VerificatorDashboard() {
                 
                 <Button 
                   onClick={() => router.push('/verificator/audit-logs')}
-                  className="group relative bg-white border-2 border-gray-100 hover:border-gray-200 text-gray-700 py-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
+                  className="group relative bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-700 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-slate-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-slate-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
                   <div className="relative flex items-center justify-center gap-3">
-                    <FileText className="h-5 w-5 text-gray-600" />
-                    <span className="font-medium">Riwayat Verifikasi</span>
+                    <FileText className="h-6 w-6 text-gray-600 group-hover:scale-110 transition-transform duration-300" />
+                    <span className="font-semibold">Riwayat Verifikasi</span>
                   </div>
                 </Button>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="bg-white shadow rounded-xl overflow-hidden">
+          <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-gray-800 flex items-center">
-                <AlertTriangle className="mr-2 h-5 w-5 text-orange-600" />
+              <CardTitle className="text-xl font-bold text-gray-900 flex items-center">
+                <div className="p-2 bg-orange-100 rounded-xl mr-3">
+                  <AlertTriangle className="h-6 w-6 text-orange-600" />
+                </div>
                 Panduan Verifikasi
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-6">
               <ul className="space-y-3">
                 <li className="flex items-start">
-                  <div className="flex-shrink-0 h-5 w-5 rounded-full bg-blue-100 flex items-center justify-center mt-0.5">
-                    <span className="text-xs font-medium text-blue-800">1</span>
+                  <div className="flex-shrink-0 h-6 w-6 rounded-lg bg-blue-100 flex items-center justify-center mt-0.5">
+                    <span className="text-xs font-bold text-blue-800">1</span>
                   </div>
-                  <p className="ml-3 text-sm text-gray-600">Periksa kelengkapan data form</p>
+                  <p className="ml-4 text-sm text-gray-700 font-medium">Periksa kelengkapan data form</p>
                 </li>
                 <li className="flex items-start">
-                  <div className="flex-shrink-0 h-5 w-5 rounded-full bg-blue-100 flex items-center justify-center mt-0.5">
-                    <span className="text-xs font-medium text-blue-800">2</span>
+                  <div className="flex-shrink-0 h-6 w-6 rounded-lg bg-blue-100 flex items-center justify-center mt-0.5">
+                    <span className="text-xs font-bold text-blue-800">2</span>
                   </div>
-                  <p className="ml-3 text-sm text-gray-600">Verifikasi foto dokumentasi</p>
+                  <p className="ml-4 text-sm text-gray-700 font-medium">Verifikasi foto dokumentasi</p>
                 </li>
                 <li className="flex items-start">
-                  <div className="flex-shrink-0 h-5 w-5 rounded-full bg-blue-100 flex items-center justify-center mt-0.5">
-                    <span className="text-xs font-medium text-blue-800">3</span>
+                  <div className="flex-shrink-0 h-6 w-6 rounded-lg bg-blue-100 flex items-center justify-center mt-0.5">
+                    <span className="text-xs font-bold text-blue-800">3</span>
                   </div>
-                  <p className="ml-3 text-sm text-gray-600">Periksa lokasi geografis</p>
+                  <p className="ml-4 text-sm text-gray-700 font-medium">Periksa lokasi geografis</p>
                 </li>
                 <li className="flex items-start">
-                  <div className="flex-shrink-0 h-5 w-5 rounded-full bg-blue-100 flex items-center justify-center mt-0.5">
-                    <span className="text-xs font-medium text-blue-800">4</span>
+                  <div className="flex-shrink-0 h-6 w-6 rounded-lg bg-blue-100 flex items-center justify-center mt-0.5">
+                    <span className="text-xs font-bold text-blue-800">4</span>
                   </div>
-                  <p className="ml-3 text-sm text-gray-600">Setujui atau tolak form dengan alasan yang jelas</p>
+                  <p className="ml-4 text-sm text-gray-700 font-medium">Setujui atau tolak form dengan alasan yang jelas</p>
                 </li>
               </ul>
             </CardContent>

@@ -30,29 +30,33 @@ export const PhotoDocumentation: React.FC<PhotoDocumentationProps> = ({
   disabled
 }) => {
   return (
-    <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-amber-50 to-orange-50 border-b">
-        <CardTitle className="flex items-center text-lg sm:text-xl">
-          <Camera className="mr-2 h-5 w-5 text-amber-600" />
+    <Card className="bg-white shadow-xl rounded-2xl overflow-hidden border-0">
+      <CardHeader className="bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-100">
+        <CardTitle className="flex items-center text-xl font-bold">
+          <div className="p-2 bg-amber-100 rounded-xl mr-3">
+            <Camera className="h-6 w-6 text-amber-600" />
+          </div>
           Dokumentasi Foto
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-6">
-        <div className="mb-4 p-3 bg-amber-50 rounded-lg border border-amber-200">
+      <CardContent className="p-8">
+        <div className="mb-6 p-4 bg-amber-50 rounded-xl border border-amber-200/50">
           <div className="flex items-start">
-            <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5 mr-2 flex-shrink-0" />
+            <div className="p-1 bg-amber-100 rounded-lg mr-3 flex-shrink-0">
+              <AlertCircle className="h-5 w-5 text-amber-600" />
+            </div>
             <div>
               {isResubmit ? (
                 <>
-                  <p className="text-sm font-medium text-amber-800">Foto yang Perlu Diperbaiki</p>
-                  <p className="text-xs text-amber-700 mt-1">
+                  <p className="text-sm font-semibold text-amber-900">Foto yang Perlu Diperbaiki</p>
+                  <p className="text-sm text-amber-800 mt-1 leading-relaxed">
                     Silakan unggah ulang foto yang ditolak sesuai dengan catatan dari verifikator.
                   </p>
                 </>
               ) : (
                 <>
-                  <p className="text-sm font-medium text-amber-800">Dokumentasi Foto Baru</p>
-                  <p className="text-xs text-amber-700 mt-1">
+                  <p className="text-sm font-semibold text-amber-900">Dokumentasi Foto Baru</p>
+                  <p className="text-sm text-amber-800 mt-1 leading-relaxed">
                     Ambil foto sesuai dengan ketentuan untuk setiap item yang diperlukan.
                   </p>
                 </>
@@ -60,9 +64,9 @@ export const PhotoDocumentation: React.FC<PhotoDocumentationProps> = ({
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           {photoFields.map((field) => (
-            <div key={field.name} className="space-y-3">
+            <div key={field.name} className="space-y-4">
               {isResubmit && rejectedPhotos[field.name] && (
                 <RejectedPhotoIndicator
                   status={rejectedPhotos[field.name].status}
@@ -82,10 +86,12 @@ export const PhotoDocumentation: React.FC<PhotoDocumentationProps> = ({
             </div>
           ))}
         </div>
-        <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+        <div className="mt-8 p-5 bg-blue-50 rounded-xl border border-blue-200/50">
           <div className="flex items-start">
-            <Image className="h-5 w-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" />
-            <p className="text-sm text-blue-800">
+            <div className="p-1 bg-blue-100 rounded-lg mr-3 flex-shrink-0">
+              <Image className="h-5 w-5 text-blue-600" />
+            </div>
+            <p className="text-sm text-blue-900 leading-relaxed">
               <span className="font-medium">Petunjuk:</span> Unggah foto dokumentasi untuk setiap item yang diperlukan. 
               Foto akan secara otomatis diberi watermark dengan timestamp saat pengambilan foto.
             </p>
