@@ -1,0 +1,211 @@
+'use client';
+
+import React, { useState, useEffect, Suspense } from 'react';
+import { useRouter } from 'next/navigation';
+import { useSession } from "next-auth/react";
+import { toast } from 'react-hot-toast';
+
+// Components
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { MyFormList } from "./components/MyFormList";
+import { MyFormFilter } from "./components/MyFormFilter";
+import FormDetailView from "./components/FormDetailView";
+import { Loader2, Plus } from 'lucide-react';
+
+// Types & API
+import { FormVerification } from "@/types";
+import api from '@/lib/api';
+
+type FormStatus = 'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED';
+type FilterPeriod = 'all' | string;
+
+interface EnhancedFormVerification extends FormVerification {
+  photoStatus: string;
+  periode: string;
+  status: FormStatus;
+}
+
+interface PhotoStatusIndicatorProps {
+  status: string;
+}
+
+const PhotoStatusIndicator: React.FC<PhotoStatusIndicatorProps> = ({ status }) => {
+  return (
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+      status === 'completed' ? 'bg-green-100 text-green-800' :
+      status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+      'bg-red-100 text-red-800'
+    }`}>
+      {status}
+    </span>
+  );
+};
+
+interface MyFormFilterProps {
+  selectedStatus: FormStatus;
+  filterPeriod: FilterPeriod;
+  onFilterChange: (status: FormStatus, period: FilterPeriod) => void;
+}
+
+// Remove the duplicate interface as we'll use the one from MyFormList component
+
+function MyFormsPage() {
+  const router = useRouter();
+  const { data: session } = useSession();
+
+  // State management
+  const [forms, setForms] = useState<EnhancedFormVerification[]>([]);
+  const [filteredForms, setFilteredForms] = useState<EnhancedFormVerification[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedForm, setSelectedForm] = useState<EnhancedFormVerification | null>(null);
+  const [showDetailView, setShowDetailView] = useState(false);
+  const [filterStatus, setFilterStatus] = useState<FormStatus>("ALL");
+
+  // Fetch forms data
+  useEffect(() => {
+    const fetchForms = async () => {
+      try {
+        if (!session?.user?.accessToken) {
+          throw new Error('No access token available');
+        }
+
+        const response = await axios.get<EnhancedFormVerification[]>(`${BASEURL}/api/forms/engineer`, {
+          headers: {
+            Authorization: `Bearer ${session.user.accessToken}`,
+          },
+        });
+
+        setForms(response.data);
+        setFilteredForms(response.data);
+      } catch (error) {
+        console.error("Error fetching forms:", error);
+        
+        let errorMessage = "Failed to fetch forms data";
+        if (axios.isAxiosError(error)) {
+          if (error.response?.status === 401) {
+            errorMessage = "Your session has expired. Please login again.";
+          } else if (error.response?.status === 403) {
+            errorMessage = "You don't have permission to access this data.";
+          } else if (error.response?.data?.message) {
+            errorMessage = error.response.data.message;
+          }
+        }
+
+        toast({
+          title: "Error",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchForms();
+  }, [session, toast]);
+
+  // Handle form filtering
+  const handleFilter = (status: FormStatus, period: FilterPeriod) => {
+    setFilterStatus(status);
+    setFilterPeriod(period);
+    
+    const filtered = forms.filter(form => {
+      const statusMatch = status === "ALL" || form.status === status;
+      const periodMatch = period === "all" || form.periode === period;
+      return statusMatch && periodMatch;
+    });
+    
+    setFilteredForms(filtered);
+  };
+
+  // Handle form detail view
+  const viewFormDetails = (form: FormVerification) => {
+    setSelectedForm(form as EnhancedFormVerification);
+    setShowDetailView(true);
+  };
+
+  // Handle form resubmission
+  const handleResubmit = async (formId: string) => {
+    try {
+      if (!session?.user?.accessToken) {
+        throw new Error('No access token available');
+      }
+
+      await axios.post(
+        `${BASEURL}/api/forms/resubmit/${formId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${session.user.accessToken}`,
+          },
+        }
+      );
+      
+      toast({
+        title: "Success",
+        description: "Form resubmitted successfully",
+      });
+      
+      // Refresh forms data
+      router.refresh();
+    } catch (error) {
+      console.error("Error resubmitting form:", error);
+      
+      let errorMessage = "Failed to resubmit form";
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          errorMessage = "Your session has expired. Please login again.";
+        } else if (error.response?.status === 403) {
+          errorMessage = "You don't have permission to resubmit this form.";
+        } else if (error.response?.status === 404) {
+          errorMessage = "Form not found.";
+        } else if (error.response?.data?.message) {
+          errorMessage = error.response.data.message;
+        }
+      }
+      
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    }
+  };
+
+  return (
+    <div className="container mx-auto p-6 space-y-6">
+      <Card className="p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">My Forms</h1>
+          <Button onClick={() => router.push("/engineer/forms/new")}>
+            Create New Form
+          </Button>
+        </div>
+
+        <MyFormFilter
+          selectedStatus={filterStatus}
+          onStatusChange={(status) => handleFilter(status as FormStatus, filterPeriod)}
+        />
+
+        <MyFormList
+          forms={filteredForms}
+          onViewDetail={viewFormDetails}
+          onResubmit={handleResubmit}
+        />
+      </Card>
+
+      {showDetailView && selectedForm && (
+        <FormDetailView
+          form={selectedForm}
+          onClose={() => {
+            setShowDetailView(false);
+            setSelectedForm(null);
+          }}
+        />
+      )}
+
+      <Toaster />
+    </div>
+  );
+}

@@ -1,0 +1,934 @@
+'use client';
+
+import { useState, useEffect, useRef, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useForm, Controller } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import Select from 'react-select';
+import api from '@/lib/api';
+import { MasterData, FormVerificationCreate } from '@/types';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import FileUpload from '@/components/file-upload';
+import ConfirmPhotoModal from '@/components/ui/confirm-photo-modal';
+import PhotoStatusIndicator from '@/components/ui/photo-status-indicator';
+import PhotoRejectionComment from '@/components/ui/photo-rejection-comment';
+import { 
+  MapPin, 
+  Satellite, 
+  Wifi, 
+  Monitor, 
+  Video, 
+  Server, 
+  Cable, 
+  Plug, 
+  HardDrive, 
+  Radio, 
+  FileText,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+  Loader2,
+  Camera,
+  Upload,
+  Image
+} from 'lucide-react';
+
+// Wrapper component for search params
+const FormSubmissionPageWrapper = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <FormSubmissionPage />
+    </Suspense>
+  );
+};
+
+
+'use client';
+
+import React, { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { Button } from '@/components/ui/button';
+import { XCircle, CheckCircle, Loader2 } from 'lucide-react';
+import { toast } from 'react-hot-toast';
+import { MasterData, FormVerificationCreate } from '@/types';
+import api from '@/lib/api';
+
+// Components
+import { BasicInformation } from './components/BasicInformation';
+import { LocationSection } from './components/LocationSection';
+import { ChecklistVerification } from './components/ChecklistVerification';
+import { PhotoDocumentation } from './components/PhotoDocumentation';
+import { SimCardRecommendation } from './components/SimCardRecommendation';
+import { MaintenancePeriod } from './components/MaintenancePeriod';
+import ConfirmPhotoModal from '@/components/ui/confirm-photo-modal';
+
+// Hooks
+import { useLocationTracking } from './hooks/useLocationTracking';
+import { usePhotoManagement } from './hooks/usePhotoManagement';
+import { useFormSubmission } from './hooks/useFormSubmission';
+
+const FormSubmissionPage: React.FC = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [masterData, setMasterData] = useState<MasterData[]>([]);
+  const [selectedMasterData, setSelectedMasterData] = useState<MasterData | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [location, setLocation] = useState<{ latitude: string; longitude: string } | null>(null);
+  const [locationError, setLocationError] = useState<string | null>(null);
+  const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({});
+  const [pmPeriodeList, setPmPeriodeList] = useState<string[]>(['PM1', 'PM2', 'PM3', 'PM4', 'PM5', 'PM6', 'PM7']);
+  const [showFinalConfirmModal, setShowFinalConfirmModal] = useState(false);
+  const [isResubmit, setIsResubmit] = useState(false);
+  const [rejectedPhotos, setRejectedPhotos] = useState<Record<string, { status: string; komentar: string }>>({});
+  const locationRequested = useRef(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const { register, handleSubmit, control, setValue, watch, formState: { errors } } = useForm<FormVerificationCreate>({
+    defaultValues: {
+      TID: '',
+      KANWIL: '',
+      KC_SUPERVISI: '',
+      LOKASI: '',
+      PROJECT: '',
+      PIC_AREA: '',
+      NO_PC: '',
+      SN_MINI_PC: '',
+      STATUS_SIGNAL_MODEM: false,
+      STATUS_DASHBOARD: false,
+      STATUS_CAMERA: false,
+      STATUS_NVR: false,
+      STATUS_KABEL_LAN: false,
+      STATUS_HDMI: false,
+      STATUS_ADAPTOR: false,
+      STATUS_HARDISK: false,
+      STATUS_MODEM: false,
+      REKOMENDASI_SIMCARD: '',
+      REKOMENDASI_CATATAN: '',
+      PM_PERIODE: 'PM1',
+      ID_ENGINEER: '',
+      FOTO_MINI_PC_FULL: '',
+      FOTO_SN_MINI_PC: '',
+      FOTO_TID: '',
+      FOTO_DASHBOARD_VIMS: '',
+      FOTO_SIGNAL_MODEM: '',
+      FOTO_STORAGE_MINI: '',
+      FOTO_TEMUAN_RUSAK: '',
+    }
+  });
+
+  // Watch TID field to auto-fill master data
+  const tidValue = watch('TID');
+
+  // Auto-fill master data when TID changes
+  useEffect(() => {
+    if (tidValue) {
+      const selectedData = masterData.find(data => data.TID === tidValue);
+      if (selectedData) {
+        setSelectedMasterData(selectedData);
+        // Set all related fields
+        setValue('KANWIL', selectedData.KANWIL);
+        setValue('KC_SUPERVISI', selectedData.KC_SUPERVISI);
+        setValue('LOKASI', selectedData.LOKASI);
+        setValue('PROJECT', selectedData.PROJECT);
+        setValue('PIC_AREA', selectedData.PIC_AREA);
+        setValue('NO_PC', selectedData.NO_PC);
+        setValue('SN_MINI_PC', selectedData.SN_MINI_PC);
+      }
+    } else {
+      // Clear fields if no TID selected
+      setSelectedMasterData(null);
+      setValue('KANWIL', '');
+      setValue('KC_SUPERVISI', '');
+      setValue('LOKASI', '');
+      setValue('PROJECT', '');
+      setValue('PIC_AREA', '');
+      setValue('NO_PC', '');
+      setValue('SN_MINI_PC', '');
+    }
+  }, [tidValue, masterData, setValue]);
+
+  useEffect(() => {
+    loadMasterData();
+    loadPMPeriodeSettings();
+    getLocation();
+  }, []); // Empty dependency array to run only once on mount
+
+  const loadMasterData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await api.get<MasterData[]>('/master-data/');
+      setMasterData(response.data);
+    } catch (error) {
+      toast.error('Gagal memuat data master');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loadPMPeriodeSettings = async () => {
+    try {
+      // Cek apakah ada pengaturan periode di localStorage
+      const savedPeriodeList = localStorage.getItem('pmPeriodeList');
+      if (savedPeriodeList) {
+        setPmPeriodeList(JSON.parse(savedPeriodeList));
+      }
+    } catch (error) {
+      console.error('Error loading PM Periode settings:', error);
+      // Gunakan default jika gagal memuat
+      setPmPeriodeList(['PM1', 'PM2', 'PM3', 'PM4', 'PM5', 'PM6', 'PM7']);
+    }
+  };
+
+  const getLocation = (relaxedMode = false) => {
+    if (locationRequested.current) return;
+    
+    locationRequested.current = true;
+    setLocationError(null);
+    
+    if (!navigator.geolocation) {
+      const errorMsg = 'Geolocation tidak didukung oleh browser Anda. Harap gunakan browser yang mendukung geolocation.';
+      setLocationError(errorMsg);
+      toast.error(errorMsg);
+      return;
+    }
+
+    // Show loading state with more informative message
+    toast.loading(
+      relaxedMode 
+        ? 'Mendapatkan lokasi dengan pengaturan cepat...' 
+        : 'Mendapatkan lokasi... (Mencoba metode terbaik)', 
+      { id: 'location-loading' }
+    );
+
+    // Enhanced geolocation with multiple strategies and progressive fallbacks
+    const strategies = [
+      // Strategy 1: Network-based with very relaxed settings (fastest)
+      {
+        name: 'jaringan cepat',
+        enableHighAccuracy: false,
+        timeout: relaxedMode ? 5000 : 8000,
+        maximumAge: relaxedMode ? 1800000 : 900000 // 15-30 minutes cache for better reliability
+      },
+      // Strategy 2: Balanced approach
+      {
+        name: 'keseimbangan akurasi',
+        enableHighAccuracy: true,
+        timeout: relaxedMode ? 10000 : 15000,
+        maximumAge: relaxedMode ? 900000 : 600000 // 10-15 minutes cache
+      },
+      // Strategy 3: High accuracy with extended timeout
+      {
+        name: 'GPS presisi tinggi',
+        enableHighAccuracy: true,
+        timeout: relaxedMode ? 20000 : 30000,
+        maximumAge: 1800000 // 30 minutes cache
+      },
+      // Strategy 4: Emergency fallback with maximum timeout
+      {
+        name: 'mode darurat',
+        enableHighAccuracy: false,
+        timeout: 45000, // Extended timeout for difficult conditions
+        maximumAge: 3600000 // 1 hour cache for last resort
+      }
+    ];
+
+    let strategyIndex = 0;
+    
+    const tryNextStrategy = () => {
+      if (strategyIndex >= strategies.length) {
+        // All strategies failed
+        const errorMsg = 'Gagal mendapatkan lokasi setelah beberapa percobaan. Pastikan GPS/lokasi diaktifkan dan coba lagi.';
+        setLocationError(errorMsg);
+        toast.error(errorMsg, { 
+          id: 'location-loading',
+          duration: 15000
+        });
+        return;
+      }
+
+      const options = strategies[strategyIndex];
+      const strategyName = options.name;
+
+      if (strategyIndex > 0) {
+        toast.loading(`Mencoba mendapatkan lokasi dengan ${strategyName}... (Percobaan ${strategyIndex + 1}/${strategies.length})`, { 
+          id: 'location-loading' 
+        });
+      }
+
+      // Add a small delay between strategies to allow device to adjust
+      if (strategyIndex > 0) {
+        setTimeout(() => {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const { latitude, longitude } = position.coords;
+              
+              // Validate coordinates
+              if (isNaN(latitude) || isNaN(longitude)) {
+                strategyIndex++;
+                tryNextStrategy();
+                return;
+              }
+              
+              // Additional validation for realistic coordinates
+              if (Math.abs(latitude) > 90 || Math.abs(longitude) > 180) {
+                strategyIndex++;
+                tryNextStrategy();
+                return;
+              }
+              
+              setLocation({
+                latitude: latitude.toString(),
+                longitude: longitude.toString()
+              });
+              setValue('latitude', latitude.toString());
+              setValue('longitude', longitude.toString());
+              
+              const successMsg = relaxedMode 
+                ? `Lokasi berhasil didapatkan (${strategyName})` 
+                : `Lokasi berhasil didapatkan secara otomatis (${strategyName})`;
+              toast.success(successMsg, { id: 'location-loading' });
+            },
+            (error) => {
+              console.warn(`Strategy ${strategyIndex + 1} (${strategyName}) failed:`, error);
+              strategyIndex++;
+              tryNextStrategy();
+            },
+            {
+              enableHighAccuracy: options.enableHighAccuracy,
+              timeout: options.timeout,
+              maximumAge: options.maximumAge
+            }
+          );
+        }, strategyIndex > 0 ? 1000 : 0); // Small delay between retries
+      } else {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            
+            // Validate coordinates
+            if (isNaN(latitude) || isNaN(longitude)) {
+              strategyIndex++;
+              tryNextStrategy();
+              return;
+            }
+            
+            // Additional validation for realistic coordinates
+            if (Math.abs(latitude) > 90 || Math.abs(longitude) > 180) {
+              strategyIndex++;
+              tryNextStrategy();
+              return;
+            }
+            
+            setLocation({
+              latitude: latitude.toString(),
+              longitude: longitude.toString()
+            });
+            setValue('latitude', latitude.toString());
+            setValue('longitude', longitude.toString());
+            
+            const successMsg = relaxedMode 
+              ? `Lokasi berhasil didapatkan (${strategyName})` 
+              : `Lokasi berhasil didapatkan secara otomatis (${strategyName})`;
+            toast.success(successMsg, { id: 'location-loading' });
+          },
+          (error) => {
+            console.warn(`Strategy ${strategyIndex + 1} (${strategyName}) failed:`, error);
+            strategyIndex++;
+            tryNextStrategy();
+          },
+          {
+            enableHighAccuracy: options.enableHighAccuracy,
+            timeout: options.timeout,
+            maximumAge: options.maximumAge
+          }
+        );
+      }
+    };
+
+    tryNextStrategy();
+  };
+
+  const handlePhotoUpload = (url: string, fieldName: string) => {
+    setPhotoUrls(prev => ({ ...prev, [fieldName]: url }));
+    setValue(fieldName as keyof FormVerificationCreate, url);
+    
+    // Log untuk debugging
+    console.log(`Photo uploaded: ${fieldName} = ${url}`);
+  };
+
+  const handleFinalSubmit = (data: FormVerificationCreate) => {
+    // Validasi bahwa lokasi harus ada
+    if (!location) {
+      toast.error('Lokasi geografis wajib didapatkan secara otomatis sebelum submit form');
+      return;
+    }
+    
+    // Validasi bahwa semua foto yang diperlukan sudah diisi
+    let requiredPhotos;
+    if (isResubmit) {
+      // Hanya validasi foto yang ditolak
+      requiredPhotos = Object.keys(rejectedPhotos).filter(
+        field => rejectedPhotos[field].status === 'REJECTED'
+      );
+    } else {
+      // Validasi semua foto
+      requiredPhotos = [
+        'FOTO_MINI_PC_FULL',
+        'FOTO_SN_MINI_PC',
+        'FOTO_TID',
+        'FOTO_DASHBOARD_VIMS',
+        'FOTO_SIGNAL_MODEM',
+        'FOTO_STORAGE_MINI',
+        'FOTO_TEMUAN_RUSAK'
+      ];
+    }
+    
+    const missingPhotos = requiredPhotos.filter(photoField => !data[photoField as keyof FormVerificationCreate]);
+    
+    if (missingPhotos.length > 0) {
+      toast.error(`Harap lengkapi semua foto yang diperlukan: ${missingPhotos.join(', ')}`);
+      return;
+    }
+    
+    // Tampilkan modal konfirmasi akhir sebelum submit
+    setShowFinalConfirmModal(true);
+  };
+
+  const handleConfirmSubmit = async (data: FormVerificationCreate) => {
+    setIsSubmitting(true);
+    try {
+      // Set ID_ENGINEER dari localStorage
+      const userId = localStorage.getItem('userId') || 'eng001';
+      data.ID_ENGINEER = userId;
+      
+      // Set timestamp
+      data.geo_timestamp = new Date().toISOString();
+      
+      // Photo URLs are already set through setValue in handlePhotoUpload
+      // But we'll ensure they're set correctly here
+      data.FOTO_MINI_PC_FULL = photoUrls.FOTO_MINI_PC_FULL || data.FOTO_MINI_PC_FULL || '';
+      data.FOTO_SN_MINI_PC = photoUrls.FOTO_SN_MINI_PC || data.FOTO_SN_MINI_PC || '';
+      data.FOTO_TID = photoUrls.FOTO_TID || data.FOTO_TID || '';
+      data.FOTO_DASHBOARD_VIMS = photoUrls.FOTO_DASHBOARD_VIMS || data.FOTO_DASHBOARD_VIMS || '';
+      data.FOTO_SIGNAL_MODEM = photoUrls.FOTO_SIGNAL_MODEM || data.FOTO_SIGNAL_MODEM || '';
+      data.FOTO_STORAGE_MINI = photoUrls.FOTO_STORAGE_MINI || data.FOTO_STORAGE_MINI || '';
+      data.FOTO_TEMUAN_RUSAK = photoUrls.FOTO_TEMUAN_RUSAK || data.FOTO_TEMUAN_RUSAK || '';
+      
+      // Log data before sending for debugging
+      console.log('Sending form data:', data);
+      
+      if (isResubmit) {
+        // Get form ID from search params
+        const formId = searchParams.get('resubmit');
+        if (formId) {
+          // Prepare foto_urls for resubmit
+          const fotoUrlsForResubmit: Record<string, string> = {};
+          Object.keys(rejectedPhotos).forEach(field => {
+            if (rejectedPhotos[field].status === 'REJECTED') {
+              fotoUrlsForResubmit[field] = data[field as keyof FormVerificationCreate] as string || '';
+            }
+          });
+          
+          await api.post(`/form/resubmit/${formId}`, {
+            foto_urls: fotoUrlsForResubmit
+          });
+          toast.success('Form berhasil dikirim ulang!');
+        }
+      } else {
+        await api.post('/form/submit', data);
+        toast.success('Form berhasil dikirim!');
+      }
+      
+      router.push('/engineer/my-forms');
+    } catch (error: any) {
+      console.error('Form submission error:', error);
+      toast.error(error.response?.data?.detail || 'Gagal mengirim form');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Checklist items with icon
+  const checklistItems = [
+    { name: 'STATUS_SIGNAL_MODEM', label: 'Status Signal Modem', icon: Wifi },
+    { name: 'STATUS_DASHBOARD', label: 'Status Dashboard', icon: Monitor },
+    { name: 'STATUS_CAMERA', label: 'Status Camera', icon: Video },
+    { name: 'STATUS_NVR', label: 'Status NVR', icon: Server },
+    { name: 'STATUS_KABEL_LAN', label: 'Status Kabel LAN', icon: Cable },
+    { name: 'STATUS_HDMI', label: 'Status HDMI', icon: Plug },
+    { name: 'STATUS_ADAPTOR', label: 'Status Adaptor', icon: Plug },
+    { name: 'STATUS_HARDISK', label: 'Status Hardisk', icon: HardDrive },
+    { name: 'STATUS_MODEM', label: 'Status Modem', icon: Radio },
+  ];
+
+  // Photo upload fields
+  const photoFields = [
+    { name: 'FOTO_MINI_PC_FULL', label: 'Foto Mini PC Full' },
+    { name: 'FOTO_SN_MINI_PC', label: 'Foto SN Mini PC' },
+    { name: 'FOTO_TID', label: 'Foto TID' },
+    { name: 'FOTO_DASHBOARD_VIMS', label: 'Foto Dashboard VIMS' },
+    { name: 'FOTO_SIGNAL_MODEM', label: 'Foto Signal Modem' },
+    { name: 'FOTO_STORAGE_MINI', label: 'Foto Storage Mini' },
+    { name: 'FOTO_TEMUAN_RUSAK', label: 'Foto Temuan Rusak' },
+  ];
+
+  return (
+    <div className="container mx-auto py-4 sm:py-8 px-4">
+      {/* Header Section */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{isResubmit ? 'Resubmit Form Verifikasi Aset' : 'Form Verifikasi Aset'}</h1>
+          <p className="text-gray-600 mt-2">
+            {isResubmit 
+              ? 'Lengkapi form verifikasi aset dengan foto yang perlu diresubmit' 
+              : 'Lengkapi form verifikasi aset dengan data yang akurat'}
+          </p>
+        </div>
+        <Button 
+          onClick={() => router.back()}
+          variant="outline"
+          className="flex items-center whitespace-nowrap"
+        >
+          <XCircle className="mr-2 h-4 w-4" />
+          Batal
+        </Button>
+      </div>
+
+      {/* Resubmit Alert Section */}
+      {isResubmit && (
+        <div className="mb-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
+          <div className="flex items-start">
+            <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5 mr-2 flex-shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-amber-800">Mode Resubmit</p>
+              <p className="text-xs text-amber-700 mt-1">
+                Anda sedang dalam mode resubmit. Hanya foto yang sebelumnya ditolak yang perlu diunggah ulang.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Main Form Section */}
+      <form onSubmit={handleSubmit(handleFinalSubmit)} className="space-y-8">
+        <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+            <CardTitle className="flex items-center text-lg sm:text-xl">
+              <FileText className="mr-2 h-5 w-5 text-blue-600" />
+              Informasi Dasar
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+          <div className="space-y-2">
+            <Label htmlFor="TID" className="text-gray-700 font-medium">
+              Terminal ID (TID) <span className="text-red-500">*</span>
+            </Label>
+            <Controller
+              name="TID"
+              control={control}
+              rules={{ required: 'TID wajib dipilih' }}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  options={masterData
+                    .sort((a, b) => a.TID.localeCompare(b.TID))
+                    .map((data) => ({
+                      value: data.TID,
+                      label: `${data.TID} - ${data.LOKASI}`,
+                    }))
+                  }
+                  isDisabled={isLoading || isResubmit}
+                  placeholder="Cari atau pilih TID..."
+                  onChange={(option) => field.onChange(option?.value)}
+                  value={
+                    field.value
+                      ? {
+                          value: field.value,
+                          label:
+                            masterData.find((d) => d.TID === field.value)?.LOKASI
+                              ? `${field.value} - ${masterData.find((d) => d.TID === field.value)?.LOKASI}`
+                              : field.value,
+                        }
+                      : null
+                  }
+                  className="text-sm"
+                />
+              )}
+            />
+            {errors.TID && (
+              <p className="text-sm text-red-600 flex items-center">
+                <AlertCircle className="mr-1 h-4 w-4" />
+                {errors.TID.message}
+              </p>
+            )}
+          </div>
+
+              {/* Location */}
+              <div className="space-y-2">
+                <Label className="text-gray-700 font-medium">
+                  Lokasi Geografis <span className="text-red-500">*</span>
+                </Label>
+                <p className="text-xs text-gray-500 mt-1">
+                  Lokasi akan didapatkan secara otomatis. Pastikan GPS/lokasi diaktifkan pada perangkat Anda.
+                </p>
+                {locationError && (
+                  <p className="text-sm text-red-600 flex items-center">
+                    <AlertCircle className="mr-1 h-4 w-4" />
+                    {locationError}
+                  </p>
+                )}
+                {locationError && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      // Reset location state and try again with more relaxed settings
+                      locationRequested.current = false;
+                      setLocation(null);
+                      setLocationError(null);
+                      getLocation(true); // Try with more relaxed settings
+                    }}
+                    className="mt-2 text-xs"
+                  >
+                    <Satellite className="mr-1 h-3 w-3" />
+                    Coba Lagi (Mode Cepat)
+                  </Button>
+                )}
+                {location && (
+                  <div className="mt-2 p-3 bg-green-50 rounded-lg border border-green-200">
+                    <div className="flex items-center text-green-800">
+                      <MapPin className="mr-2 h-4 w-4" />
+                      <span className="text-sm font-medium">Lokasi berhasil didapatkan</span>
+                    </div>
+                    <div className="mt-2 text-xs text-green-700">
+                      <p>Latitude: {location.latitude}</p>
+                      <p>Longitude: {location.longitude}</p>
+                    </div>
+                  </div>
+                )}
+                <input type="hidden" {...register('latitude')} />
+                <input type="hidden" {...register('longitude')} />
+              </div>
+            </div>
+
+            {/* Snapshot Master Data */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <div>
+                <Label className="text-xs text-gray-500">Kanwil</Label>
+                <Input
+                  {...register('KANWIL')}
+                  readOnly
+                  className="bg-gray-100 border-0"
+                />
+              </div>
+              <div>
+                <Label className="text-xs text-gray-500">KC Supervisi</Label>
+                <Input
+                  {...register('KC_SUPERVISI')}
+                  readOnly
+                  className="bg-gray-100 border-0"
+                />
+              </div>
+              <div>
+                <Label className="text-xs text-gray-500">Lokasi</Label>
+                <Input
+                  {...register('LOKASI')}
+                  readOnly
+                  className="bg-gray-100 border-0"
+                />
+              </div>
+              <div>
+                <Label className="text-xs text-gray-500">Project</Label>
+                <Input
+                  {...register('PROJECT')}
+                  readOnly
+                  className="bg-gray-100 border-0"
+                />
+              </div>
+              <div>
+                <Label className="text-xs text-gray-500">PIC Area</Label>
+                <Input
+                  {...register('PIC_AREA')}
+                  readOnly
+                  className="bg-gray-100 border-0"
+                />
+              </div>
+              <div>
+                <Label className="text-xs text-gray-500">No PC</Label>
+                <Input
+                  {...register('NO_PC')}
+                  readOnly
+                  className="bg-gray-100 border-0"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <Label className="text-xs text-gray-500">SN Mini PC</Label>
+                <Input
+                  {...register('SN_MINI_PC')}
+                  readOnly
+                  className="bg-gray-100 border-0"
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Checklist Section */}
+        <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b">
+            <CardTitle className="flex items-center text-lg sm:text-xl">
+              <CheckCircle className="mr-2 h-5 w-5 text-green-600" />
+              Checklist Verifikasi
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {checklistItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.name} className="flex items-center p-4 border rounded-lg hover:bg-gray-50 transition">
+                    <Icon className="mr-3 h-5 w-5 text-gray-500 flex-shrink-0" />
+                    <div className="flex-1">
+                      <Label className="block text-sm font-medium text-gray-700">
+                        {item.label}
+                      </Label>
+                      <Controller
+                        name={item.name as keyof FormVerificationCreate}
+                        control={control}
+                        render={({ field }) => (
+                          <select
+                            {...field}
+                            value={field.value ? 'OK' : 'NOT OK'}
+                            onChange={(e) => field.onChange(e.target.value === 'OK')}
+                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                            disabled={isResubmit} // Disable in resubmit mode
+                          >
+                            <option value="OK">OK</option>
+                            <option value="NOT OK">NOT OK</option>
+                          </select>
+                        )}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Photo Upload Section */}
+        <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-amber-50 to-orange-50 border-b">
+            <CardTitle className="flex items-center text-lg sm:text-xl">
+              <Camera className="mr-2 h-5 w-5 text-amber-600" />
+              Dokumentasi Foto
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            {isResubmit ? (
+              <div className="mb-4 p-3 bg-amber-50 rounded-lg border border-amber-200">
+                <div className="flex items-start">
+                  <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5 mr-2 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-amber-800">Foto yang Perlu Diubah</p>
+                    <p className="text-xs text-amber-700 mt-1">
+                      Hanya foto dengan status "Ditolak" yang perlu diunggah ulang.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="mb-4 p-3 bg-amber-50 rounded-lg border border-amber-200">
+                <div className="flex items-start">
+                  <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5 mr-2 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-amber-800">Semua foto wajib diisi</p>
+                    <p className="text-xs text-amber-700 mt-1">
+                      Harap unggah foto untuk semua 7 item yang diperlukan sebelum mengirim form.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {photoFields.map((field) => (
+                <FileUpload
+                  key={field.name}
+                  fieldName={field.name}
+                  label={field.label}
+                  onUploadSuccess={handlePhotoUpload}
+                  existingUrl={photoUrls[field.name]}
+                  isResubmit={isResubmit}
+                  status={rejectedPhotos[field.name]?.status as 'ACCEPTED' | 'REJECTED' | 'PENDING' || 'ACCEPTED'}
+                  komentar={rejectedPhotos[field.name]?.komentar || ''}
+                />
+              ))}
+            </div>
+            <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="flex items-start">
+                <Image className="h-5 w-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" />
+                <p className="text-sm text-blue-800">
+                  <span className="font-medium">Petunjuk:</span> Unggah foto dokumentasi untuk setiap item yang diperlukan. 
+                  Foto akan secara otomatis diberi watermark dengan timestamp saat pengambilan foto.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Rekomendasi SIM Card Section */}
+        <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-cyan-50 to-blue-50 border-b">
+            <CardTitle className="flex items-center text-lg sm:text-xl">
+              <FileText className="mr-2 h-5 w-5 text-cyan-600" />
+              Rekomendasi SIM Card
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label className="text-gray-700 font-medium">
+                  Rekomendasi SIM Card <span className="text-red-500">*</span>
+                </Label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {(['Telkomsel', 'Smartfren', 'XL', 'Indosat'] as const).map((provider) => (
+                    <div key={provider} className="flex items-center">
+                      <Controller
+                        name="REKOMENDASI_SIMCARD"
+                        control={control}
+                        rules={{ required: 'Rekomendasi SIM Card wajib dipilih' }}
+                        render={({ field }) => (
+                          <input
+                            type="radio"
+                            id={`sim-${provider}`}
+                            value={provider}
+                            checked={field.value === provider}
+                            onChange={field.onChange}
+                            className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                            disabled={isResubmit} // Disable in resubmit mode
+                          />
+                        )}
+                      />
+                      <Label htmlFor={`sim-${provider}`} className="ml-2 block text-sm font-medium text-gray-700">
+                        {provider}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+                {errors.REKOMENDASI_SIMCARD && (
+                  <p className="text-sm text-red-600 flex items-center">
+                    <AlertCircle className="mr-1 h-4 w-4" />
+                    {errors.REKOMENDASI_SIMCARD.message}
+                  </p>
+                )}
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="REKOMENDASI_CATATAN" className="text-gray-700 font-medium">
+                  Catatan Rekomendasi (Opsional)
+                </Label>
+                <textarea
+                  id="REKOMENDASI_CATATAN"
+                  {...register('REKOMENDASI_CATATAN')}
+                  rows={3}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  placeholder="Tambahkan catatan tambahan tentang rekomendasi SIM Card..."
+                  disabled={isResubmit} // Disable in resubmit mode
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* PM Periode */}
+        <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-purple-50 to-violet-50 border-b">
+            <CardTitle className="flex items-center text-lg sm:text-xl">
+              <Satellite className="mr-2 h-5 w-5 text-purple-600" />
+              Periode Maintenance
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="space-y-2">
+              <Label className="text-gray-700 font-medium">
+                PM Periode <span className="text-red-500">*</span>
+              </Label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                {pmPeriodeList.map((periode) => (
+                  <div key={periode} className="flex items-center">
+                    <Controller
+                      name="PM_PERIODE"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          type="radio"
+                          id={`pm-${periode}`}
+                          value={periode}
+                          checked={field.value === periode}
+                          onChange={field.onChange}
+                          className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                          disabled={isResubmit} // Disable in resubmit mode
+                        />
+                      )}
+                    />
+                    <Label htmlFor={`pm-${periode}`} className="ml-2 block text-sm font-medium text-gray-700">
+                      {periode}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+              {errors.PM_PERIODE && (
+                <p className="text-sm text-red-600 flex items-center">
+                  <AlertCircle className="mr-1 h-4 w-4" />
+                  {errors.PM_PERIODE.message}
+                </p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Submit Button */}
+        <div className="flex justify-end">
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white px-6 py-3 rounded-lg shadow-lg flex items-center justify-center transition-all duration-200 hover:shadow-xl"
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                {isResubmit ? 'Mengirim Ulang Form...' : 'Mengirim Form...'}
+              </>
+            ) : (
+              <>
+                <CheckCircle className="mr-2 h-4 w-4" />
+                {isResubmit ? 'Kirim Ulang Form Verifikasi' : 'Kirim Form Verifikasi'}
+              </>
+            )}
+          </Button>
+        </div>
+      </form>
+
+      {/* Final Confirmation Modal */}
+      <ConfirmPhotoModal
+        isOpen={showFinalConfirmModal}
+        onClose={() => setShowFinalConfirmModal(false)}
+        onConfirm={handleSubmit(handleConfirmSubmit)}
+        title={isResubmit ? "Konfirmasi Akhir Pengiriman Ulang Form" : "Konfirmasi Akhir Pengiriman Form"}
+        description={isResubmit 
+          ? "Pastikan foto yang diunggah adalah fakta dan sesuai kondisi lapangan. Tim verifikator berhak menolak verifikasi jika foto buram, hasil editan, atau tidak relevan. Ini adalah konfirmasi akhir sebelum form dikirim ulang."
+          : "Pastikan foto yang diunggah adalah fakta dan sesuai kondisi lapangan. Tim verifikator berhak menolak verifikasi jika foto buram, hasil editan, atau tidak relevan. Ini adalah konfirmasi akhir sebelum form dikirim."
+        }
+        isFinalConfirmation={true}
+      />
+    </div>
+  );
+}
+
+export default FormSubmissionPageWrapper;
