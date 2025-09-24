@@ -1,0 +1,55 @@
+Saya ingin kamu melakukan pengembangan pada page Form Teknisi (Next.js + TailwindCSS + Radix UI).
+
+Fitur tambahan yang harus dibuat:
+
+1. Tambahkan 2 button baru di Form Teknisi:
+   - "Device Status"
+   - "Snapshot"
+   Button ini hanya muncul jika ada TID yang valid.
+
+2. Saat salah satu button diklik:
+   - Tampilkan loading spinner selama 10–15 detik.
+   - Panggil API sesuai dokumentasi berikut:
+     - GET https://api-unified.lintasera.pro/system-status/{tid}
+     - GET https://api-unified.lintasera.pro/snapshot/{tid}
+   - Gunakan header Authorization: Bearer supersecrettoken.
+
+3. UI/UX interaksi:
+   - Gunakan modal popup untuk menampilkan hasil (status atau snapshot).
+   - Modal harus bisa ditutup dengan tombol "Close" atau klik overlay.
+   - Gunakan desain modern dengan Radix UI Dialog + Tailwind.
+   - Tampilkan loading state yang jelas (spinner di tengah modal).
+   - Jika error (404, 502, 504, token invalid), tampilkan alert/error card di dalam modal.
+
+4. Device Status Modal:
+   - Tampilkan informasi penting dari API:
+     - TID, IP, Packet Loss, Average Ping
+     - CPU usage + load
+     - Memory usage
+     - Storage usage (list mountpoint)
+     - Signal strength (signalbar, RSSI, network type)
+     - Summary section
+   - Gunakan grid atau card layout agar rapi.
+
+5. Snapshot Modal:
+   - Render hasil response sebagai gambar JPEG.
+   - Jika gagal, tampilkan pesan error.
+   - Gambar harus responsive (max-w-full, rounded-xl, shadow-md).
+
+6. Kode harus reusable:
+   - Buat komponen `DeviceStatusModal.tsx`
+   - Buat komponen `SnapshotModal.tsx`
+   - Panggil di Form Teknisi cukup dengan:
+     ```tsx
+     <DeviceStatusModal tid={tid} />
+     <SnapshotModal tid={tid} />
+     ```
+
+7. Perhatikan aksesibilitas:
+   - Modal harus fokus pada konten saat dibuka.
+   - Tambahkan aria-label pada tombol.
+   - Gunakan dark mode support.
+
+8. Jangan mengubah logika form utama, cukup tambahkan fitur integrasi ini.
+
+9. ini panduan detail api C:\laragon\www\form_api\project\API_DOCUMENTATION.md
