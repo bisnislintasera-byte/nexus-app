@@ -9,6 +9,7 @@ import type { DateRange } from 'react-day-picker';
 import type { VerificationStatus, PMPeriode } from '@/types';
 import type { FilterProps } from '@/types/verification';
 import { useDebounce } from '@/hooks/useDebounce';
+import { Search, Filter, Calendar } from 'lucide-react';
 
 const statusOptions: { value: VerificationStatus | 'all'; label: string; }[] = [
   { value: 'all', label: 'Semua Status' },
@@ -29,11 +30,14 @@ export const VerificationFilters: React.FC<FilterProps> = ({
   );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* TID Filter */}
         <div className="space-y-3">
-          <Label htmlFor="tid" className="text-sm font-semibold text-gray-800">TID</Label>
+          <Label htmlFor="tid" className="text-sm font-bold text-gray-800 flex items-center">
+            <Search className="mr-2 h-4 w-4" />
+            TID
+          </Label>
           <Input
             id="tid"
             defaultValue={filters.tid}
@@ -46,7 +50,10 @@ export const VerificationFilters: React.FC<FilterProps> = ({
 
         {/* Engineer ID Filter */}
         <div className="space-y-3">
-          <Label htmlFor="engineerId" className="text-sm font-semibold text-gray-800">Engineer ID</Label>
+          <Label htmlFor="engineerId" className="text-sm font-bold text-gray-800 flex items-center">
+            <Search className="mr-2 h-4 w-4" />
+            Engineer ID
+          </Label>
           <Input
             id="engineerId"
             defaultValue={filters.engineerId}
@@ -59,7 +66,10 @@ export const VerificationFilters: React.FC<FilterProps> = ({
 
         {/* Status Filter */}
         <div className="space-y-3">
-          <Label htmlFor="filterStatus" className="text-sm font-semibold text-gray-800">Status</Label>
+          <Label htmlFor="filterStatus" className="text-sm font-bold text-gray-800 flex items-center">
+            <Filter className="mr-2 h-4 w-4" />
+            Status
+          </Label>
           <Select
             value={filters.status}
             onValueChange={(value: VerificationStatus | 'all') => 
@@ -67,7 +77,7 @@ export const VerificationFilters: React.FC<FilterProps> = ({
             }
             disabled={loading}
           >
-            <SelectTrigger>
+            <SelectTrigger className="h-11">
               <SelectValue placeholder="Pilih Status" />
             </SelectTrigger>
             <SelectContent>
@@ -82,7 +92,10 @@ export const VerificationFilters: React.FC<FilterProps> = ({
 
         {/* PM Periode Filter */}
         <div className="space-y-3">
-          <Label htmlFor="filterPMPeriode" className="text-sm font-semibold text-gray-800">PM Periode</Label>
+          <Label htmlFor="filterPMPeriode" className="text-sm font-bold text-gray-800 flex items-center">
+            <Filter className="mr-2 h-4 w-4" />
+            PM Periode
+          </Label>
           <Select
             value={filters.pmPeriode}
             onValueChange={(value: PMPeriode) => 
@@ -90,7 +103,7 @@ export const VerificationFilters: React.FC<FilterProps> = ({
             }
             disabled={loading}
           >
-            <SelectTrigger>
+            <SelectTrigger className="h-11">
               <SelectValue placeholder="Pilih PM Periode" />
             </SelectTrigger>
             <SelectContent>
@@ -107,12 +120,15 @@ export const VerificationFilters: React.FC<FilterProps> = ({
 
       {/* Advanced Search */}
       <div className="space-y-3">
-        <Label htmlFor="searchQuery" className="text-sm font-semibold text-gray-800">Pencarian Umum</Label>
+        <Label htmlFor="searchQuery" className="text-sm font-bold text-gray-800 flex items-center">
+          <Search className="mr-2 h-4 w-4" />
+          Pencarian Umum
+        </Label>
         <Input
           id="searchQuery"
           defaultValue={filters.searchQuery}
           onChange={(e) => debouncedSearch('searchQuery', e.target.value)}
-          placeholder="Cari di semua kolom..."
+          placeholder="Cari di semua kolom (TID, lokasi, engineer, dll)..."
           className="w-full h-11"
           disabled={loading}
         />
@@ -120,7 +136,10 @@ export const VerificationFilters: React.FC<FilterProps> = ({
 
       {/* Date Range */}
       <div className="space-y-3">
-        <Label className="text-sm font-semibold text-gray-800">Rentang Tanggal</Label>
+        <Label className="text-sm font-bold text-gray-800 flex items-center">
+          <Calendar className="mr-2 h-4 w-4" />
+          Rentang Tanggal
+        </Label>
         <DateRangePicker
           date={filters.dateRange ? { 
             from: filters.dateRange.start || undefined,
